@@ -456,13 +456,9 @@ class Component extends DCLogic {
 
   componentDidMount() {
     document.title = "Эфир · Как воспитать ребёнка мусульманином";
-    // Ensure video autoplay (React doesn't always forward muted/loop properly)
+    // Ensure hero video autoplay (muted + loop must be set imperatively)
     setTimeout(() => {
-      document.querySelectorAll("video").forEach((v) => {
-        v.muted = true;
-        v.loop = true;
-        if (v.paused) v.play().catch(() => {});
-      });
+      if (this._video && this._video.paused) this._video.play().catch(() => {});
     }, 80);
     this._reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if ((this.props.starfield ?? true)) this._makeStars(this.stars, 120);
