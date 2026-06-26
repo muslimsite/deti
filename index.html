@@ -607,10 +607,18 @@ class Component extends DCLogic {
       this._L = this.prog.getTotalLength();
       this.prog.style.strokeDasharray = this._L;
       this.prog.style.strokeDashoffset = this._L;
+      // Pre-compute lookup table: sample path once, store x/y/len per point.
+      // _update() then does zero DOM calls per frame — just array lookups.
+      const N = 600;
+      const lut = new Array(N + 1);
+      for (let i = 0; i <= N; i++) {
+        const len = (i / N) * this._L;
+        const p = this.prog.getPointAtLength(len);
+        lut[i] = { x: p.x, y: p.y, len };
+      }
+      this._lut = lut;
     }
     if (this.marker) this.marker.style.opacity = "1";
-    // Cache the danger section's document position so the scroll loop never
-    // forces layout (getBoundingClientRect) per frame.
     if (this.danger) {
       const dr = this.danger.getBoundingClientRect();
       this._dangerCenterDoc = dr.top + window.pageYOffset + dr.height / 2;
@@ -619,20 +627,27 @@ class Component extends DCLogic {
   }
 
   _update() {
-    if (this._L && this.prog) {
+    if (this._lut && this._lut.length) {
       const targetY = (window.scrollY + window.innerHeight / 2) - (this._journeyTop || 0);
-      let lo = 0, hi = this._L;
-      for (let i = 0; i < 12; i++) {
-        const mid = (lo + hi) / 2;
-        if (this.prog.getPointAtLength(mid).y < targetY) lo = mid; else hi = mid;
+      const lut = this._lut;
+      // Binary search in pre-computed table — no DOM calls at all
+      let lo = 0, hi = lut.length - 1;
+      while (lo < hi) {
+        const mid = (lo + hi) >> 1;
+        if (lut[mid].y < targetY) lo = mid + 1; else hi = mid;
       }
-      const len = Math.max(0, Math.min(this._L, (lo + hi) / 2));
-      const pt = this.prog.getPointAtLength(len);
-      if (this.marker) this.marker.setAttribute("transform", "translate(" + pt.x + "," + pt.y + ")");
+      // Interpolate between adjacent samples for sub-pixel smoothness
+      const e2 = lut[lo];
+      const e1 = lut[Math.max(0, lo - 1)];
+      const t = (e2.y > e1.y) ? Math.max(0, Math.min(1, (targetY - e1.y) / (e2.y - e1.y))) : 0;
+      const x = e1.x + t * (e2.x - e1.x);
+      const y = e1.y + t * (e2.y - e1.y);
+      const len = Math.max(0, Math.min(this._L, e1.len + t * (e2.len - e1.len)));
+      if (this.marker) this.marker.setAttribute("transform", "translate(" + x + "," + y + ")");
       this.prog.style.strokeDashoffset = this._L - len;
       if (this._pts) {
         for (const q of this._pts) {
-          const on = pt.y >= q.y - 6;
+          const on = y >= q.y - 6;
           if (on && !q.el._on) { q.el._on = true; q.el.classList.add("active"); }
           else if (!on && q.el._on) { q.el._on = false; q.el.classList.remove("active"); }
         }
