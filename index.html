@@ -74,7 +74,7 @@
   .eyebrow{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-400)}
   .datepill{display:inline-flex;align-items:center;gap:clamp(8px,1.6vw,14px);flex-wrap:wrap;justify-content:center;padding:11px 20px;border:1px solid rgba(199,168,107,0.42);border-radius:var(--radius-pill);background:rgba(199,168,107,0.08);font-size:var(--fs-small);letter-spacing:.03em;color:var(--text-on-dark)}
   .diam{width:6px;height:6px;background:var(--gold-500);transform:rotate(45deg);display:inline-block;flex-shrink:0}
-  .bullet{width:9px;height:9px;background:var(--gold-gradient);transform:rotate(45deg);border-radius:1px;flex-shrink:0;display:inline-block;align-self:center;margin-top:.1em}
+  .bullet{width:9px;height:9px;background:var(--gold-gradient);transform:rotate(45deg);border-radius:1px;flex-shrink:0;display:inline-block;margin-top:.35em}
   .field{width:100%;padding:15px 18px;border-radius:var(--radius-md);border:1px solid rgba(199,168,107,0.32);background:rgba(255,255,255,0.05);color:var(--text-on-dark);font-family:var(--font-body);font-size:var(--fs-body)}
   .field:focus{border-color:var(--gold-400);box-shadow:0 0 0 3px rgba(199,168,107,0.18)}
 
@@ -168,7 +168,7 @@
         <p ref="{{ reveal }}" data-reveal-delay="{{ 130 }}" style="opacity:0;transform:translateY(20px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out);margin:12px 0 0;font-size:var(--fs-body);line-height:1.7;color:var(--text-on-dark-muted)">Воспитание — длинная дорога. И сколько бы детей ни было, на ней встречаются повороты, где непонятно, как правильно. Узнаёте себя хотя бы в одном?</p>
         <ul style="margin-top:18px;display:flex;flex-direction:column;gap:13px">
           <sc-for list="{{ pains }}" as="pain" hint-placeholder-count="6">
-            <li ref="{{ reveal }}" data-reveal-delay="{{ pain.delay }}" style="opacity:0;transform:translateX(-18px);transition:opacity .6s var(--ease-out),transform .6s var(--ease-out);display:flex;gap:13px;align-items:center"><span class="bullet"></span><span style="font-size:var(--fs-small);line-height:1.65;color:var(--text-on-dark)">{{ pain.text }}</span></li>
+            <li ref="{{ reveal }}" data-reveal-delay="{{ pain.delay }}" style="opacity:0;transform:translateX(-18px);transition:opacity .6s var(--ease-out),transform .6s var(--ease-out);display:flex;gap:13px;align-items:flex-start"><span class="bullet"></span><span style="font-size:var(--fs-small);line-height:1.65;color:var(--text-on-dark)">{{ pain.text }}</span></li>
           </sc-for>
         </ul>
       </div>
@@ -274,7 +274,7 @@
           <h2 style="margin:14px 0 20px;font-size:var(--fs-display-3)">Ваш проводник <span style="font-style:italic;color:var(--gold-400)">по маршруту</span></h2>
           <ul style="display:flex;flex-direction:column;gap:13px">
             <sc-for list="{{ bio }}" as="item" hint-placeholder-count="4">
-              <li style="display:flex;gap:13px;align-items:center"><span class="bullet"></span><span style="font-size:var(--fs-small);line-height:1.65;color:var(--text-on-dark)">{{ item }}</span></li>
+              <li style="display:flex;gap:13px;align-items:flex-start"><span class="bullet"></span><span style="font-size:var(--fs-small);line-height:1.65;color:var(--text-on-dark)">{{ item }}</span></li>
             </sc-for>
           </ul>
         </div>
