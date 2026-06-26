@@ -353,10 +353,16 @@ class Component extends DCLogic {
 
     [160, 450, 950, 1700, 3000, 5000].forEach((t) => setTimeout(() => this._build(), t));
     window.addEventListener("load", () => { this._build(); setTimeout(() => this._build(), 800); });
-    if (typeof ResizeObserver !== "undefined" && this.journey) {
-      this._ro = new ResizeObserver(() => { clearTimeout(this._rt); this._rt = setTimeout(() => this._build(), 80); });
-      this._ro.observe(this.journey);
+    // Observe the whole body so any layout shift (fonts, design-system bundle, images)
+    // triggers a path rebuild, even when the journey container height is unchanged.
+    if (typeof ResizeObserver !== "undefined") {
+      this._ro = new ResizeObserver(() => { clearTimeout(this._rot); this._rot = setTimeout(() => this._build(), 80); });
+      this._ro.observe(document.body);
     }
+    // Rebuild once on first scroll/touch — by then all custom elements are settled.
+    const onFirst = () => { this._build(); };
+    window.addEventListener("scroll", onFirst, { once: true, passive: true });
+    window.addEventListener("touchstart", onFirst, { once: true, passive: true });
   }
 
   componentWillUnmount() {
