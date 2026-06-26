@@ -37,11 +37,11 @@
   .journey{position:relative;overflow:hidden;background:radial-gradient(160% 46% at 50% 0%, #18253f 0%, #0e1626 40%, #0b0f18 100%)}
   .stars{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 
-  .road-layer{position:absolute;inset:0;z-index:6;pointer-events:none}
+  .road-layer{position:absolute;inset:0;z-index:1;pointer-events:none}
   .road-layer svg{width:100%;height:100%;display:block}
   .base-path{fill:none;stroke:rgba(199,168,107,0.42);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:0.5 13}
   .prog-path{fill:none;stroke:#EBDDB6;stroke-width:3.5;stroke-linecap:round}
-  .marker-layer{position:absolute;inset:0;z-index:7;pointer-events:none}
+  .marker-layer{position:absolute;inset:0;z-index:1;pointer-events:none}
   .road-marker{position:absolute;top:0;left:0;width:22px;height:22px;border-radius:50%;background:var(--gold-gradient);opacity:0;will-change:transform;box-shadow:0 0 16px 5px rgba(199,168,107,0.7)}
   .road-marker::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:2px solid rgba(199,168,107,0.5);animation:markerRing 2.4s ease-out infinite}
 
@@ -84,9 +84,6 @@
     .ms.L .ms-node,.ms.R .ms-node{left:28px}
     .ms-card{width:100%}
     .spk-grid{grid-template-columns:1fr;text-align:center;justify-items:center}
-    /* Road and marker go behind content on mobile so they don't cover text */
-    .road-layer{z-index:1}
-    .marker-layer{z-index:1}
   }
   @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.road-marker{animation:none}}
 </style>
@@ -196,11 +193,13 @@
               <span style="display:inline-block;width:44px;height:44px;background:var(--gold-gradient);transform:rotate(45deg);border-radius:6px;box-shadow:var(--shadow-gold)"></span>
               <h2 style="font-size:var(--fs-display-3)"><span style="font-style:italic;color:var(--gold-400)">{{ quizResultData.title }}</span></h2>
               <p style="font-size:var(--fs-small);line-height:1.75;color:var(--text-on-dark);max-width:440px">{{ quizResultData.text }}</p>
-              <div class="datepill"><span>30 июня 2026</span><span class="diam"></span><span>18:00 МСК</span><span class="diam"></span><span>бесплатно</span></div>
-              <div>
-                <x-import component-from-global-scope="SolihaIslamicParentingDesignSystem_1e5f6d.Button" variant="primary" size="lg" href="{{ tgBotUrl }}" hint-size="220px,58px">Иду на эфир</x-import>
+              <div style="margin-top:8px;display:flex;flex-direction:column;align-items:center;gap:10px">
+                <p style="font-size:var(--fs-small);color:var(--gold-400);letter-spacing:.04em;font-weight:600">Маршрут продолжается — прокрутите вниз</p>
+                <span style="display:inline-block;width:22px;height:34px;border:1.5px solid rgba(199,168,107,0.55);border-radius:999px;position:relative">
+                  <span style="position:absolute;left:50%;top:7px;width:4px;height:7px;border-radius:2px;background:var(--gold-400);transform:translateX(-50%);animation:scrollBob 1.7s var(--ease-out) infinite"></span>
+                </span>
               </div>
-              <button onclick="{{ resetQuiz }}" style="background:none;border:none;color:var(--text-on-dark-muted);font-size:12px;cursor:pointer;text-decoration:underline;margin-top:-4px">Пройти заново</button>
+              <button onclick="{{ resetQuiz }}" style="background:none;border:none;color:var(--text-on-dark-muted);font-size:12px;cursor:pointer;text-decoration:underline;margin-top:2px">Пройти заново</button>
             </div>
           </sc-if>
 
