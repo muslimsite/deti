@@ -26,6 +26,7 @@
   p{margin:0}
   ul{margin:0;padding:0;list-style:none}
 
+  @keyframes wpPop{0%{opacity:0;transform:translate(-50%,-50%) scale(0.4)}60%{transform:translate(-50%,-50%) scale(1.15)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
   @keyframes twk{0%,100%{opacity:.14}50%{opacity:.8}}
   @keyframes scrollBob{0%{transform:translateX(-50%) translateY(0);opacity:.4}50%{transform:translateX(-50%) translateY(9px);opacity:1}100%{transform:translateX(-50%) translateY(0);opacity:.4}}
   @keyframes markerRing{0%{transform:scale(0.6);opacity:.7}100%{transform:scale(1.9);opacity:0}}
@@ -62,7 +63,8 @@
 
   .ms{position:relative;max-width:1140px;margin:0 auto;padding:clamp(46px,7vw,88px) clamp(20px,5vw,40px);min-height:clamp(300px,44vh,440px);display:flex;align-items:center}
   .ms-center{position:relative;max-width:1140px;margin:0 auto;padding:clamp(56px,8vw,96px) clamp(20px,5vw,40px)}
-  .ms-node{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:4}
+  .ms-node{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:4;opacity:0}
+  .ms-node.shown{animation:wpPop .5s var(--ease-out) both;opacity:1}
   .node-dot{display:block;width:16px;height:16px;border-radius:50%;background:var(--gold-gradient);box-shadow:0 0 0 5px rgba(199,168,107,0.12),0 0 16px rgba(199,168,107,0.6);transition:box-shadow .45s var(--ease-out),transform .45s var(--ease-out)}
   .num-badge{display:inline-flex;border-radius:50%;transition:box-shadow .45s var(--ease-out),transform .45s var(--ease-out)}
   .wp.active .node-dot{box-shadow:0 0 0 8px rgba(199,168,107,0.2),0 0 26px rgba(199,168,107,0.95);transform:scale(1.18)}
@@ -452,7 +454,8 @@ class Component extends DCLogic {
   };
   setDangerLight = (el) => { this.dangerLight = el; };
   reveal = (el) => { if (el) (this._rev = this._rev || []).push(el); };
-  setNode = (el) => { if (el) (this._nodes = this._nodes || []).push(el); };
+  revealNode = (el) => { if (el && el.classList.contains("ms-node")) (this._nodeEls = this._nodeEls || []).push(el); };
+  setNode = (el) => { if (el) { (this._nodes = this._nodes || []).push(el); this.revealNode(el.parentElement); } };
 
   componentDidMount() {
     document.title = "Эфир · Как воспитать ребёнка мусульманином";
@@ -466,6 +469,7 @@ class Component extends DCLogic {
     // --- scroll reveals (robust multi-pass; works even when backgrounded) ---
     if (this._reduce) {
       (this._rev || []).forEach((el) => { el.style.opacity = "1"; el.style.transform = "none"; });
+      (this._nodeEls || []).forEach((el) => { el.classList.add("shown"); });
     } else {
       const revealEl = (el) => {
         if (el._shown) return;
@@ -474,8 +478,18 @@ class Component extends DCLogic {
         el.style.opacity = "1";
         el.style.transform = "none";
       };
+      const revealNode = (el) => {
+        if (el._shown) return;
+        el._shown = true;
+        el.classList.add("shown");
+      };
       this._io = new IntersectionObserver((entries) => {
-        entries.forEach((en) => { if (en.isIntersecting) { revealEl(en.target); this._io.unobserve(en.target); } });
+        entries.forEach((en) => {
+          if (en.isIntersecting) {
+            if (en.target._isNode) revealNode(en.target); else revealEl(en.target);
+            this._io.unobserve(en.target);
+          }
+        });
       }, { threshold: 0.05, rootMargin: "0px 0px 0px 0px" });
       const doPass = () => {
         const vh = window.innerHeight || document.documentElement.clientHeight || 800;
@@ -483,6 +497,11 @@ class Component extends DCLogic {
           if (el._shown || el._obs) return;
           if (el.getBoundingClientRect().top < vh * 0.98) revealEl(el);
           else { el._obs = true; this._io.observe(el); }
+        });
+        (this._nodeEls || []).forEach((el) => {
+          if (el._shown || el._obs) return;
+          if (el.getBoundingClientRect().top < vh * 1.05) revealNode(el);
+          else { el._obs = true; el._isNode = true; this._io.observe(el); }
         });
       };
       this._doPass = doPass;
