@@ -165,7 +165,7 @@
               <h2 style="font-size:var(--fs-display-3)">Какой вы <span style="font-style:italic;color:var(--gold-400)">путник?</span></h2>
               <p style="font-size:var(--fs-small);line-height:1.7;color:var(--text-on-dark-muted);max-width:400px">Ответьте на 3 вопроса — узнайте, на каком этапе вы находитесь и что получите на эфире лично для себя.</p>
               <div style="margin-top:4px">
-                <x-import component-from-global-scope="SolihaIslamicParentingDesignSystem_1e5f6d.Button" variant="primary" size="md" onclick="{{ startQuiz }}" hint-size="200px,52px">Пройти тест</x-import>
+                <button onclick="{{ startQuiz }}" style="display:inline-flex;align-items:center;justify-content:center;padding:14px 32px;border-radius:var(--radius-pill);border:none;background:var(--gold-gradient);color:#1a1200;font-family:var(--font-body);font-size:var(--fs-body);font-weight:700;letter-spacing:.02em;cursor:pointer;box-shadow:var(--shadow-gold);transition:opacity .18s">Пройти тест</button>
               </div>
             </div>
           </sc-if>
