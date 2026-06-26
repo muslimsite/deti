@@ -54,7 +54,7 @@
   @keyframes markerRingSvg{0%{transform:scale(1);opacity:.7}100%{transform:scale(2);opacity:0}}
 
   .content{position:relative;z-index:2}
-  .nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px clamp(18px,5vw,48px);background:rgba(11,15,24,0.6);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(199,168,107,0.12)}
+  .nav{position:sticky;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px clamp(18px,5vw,48px);background:rgba(11,15,24,0.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(199,168,107,0.12)}
 
   .stage{position:relative;min-height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:clamp(64px,9vw,110px) clamp(20px,5vw,40px)}
   .stage-bg{position:absolute;inset:0;z-index:0;background-size:cover}
@@ -249,7 +249,7 @@
         <section class="stage" ref="{{ setDanger }}">
           <video ref="{{ setDangerVideo }}" muted="{{ true }}" loop="{{ true }}" playsinline="{{ true }}" preload="none" poster="assets/danger-phone.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;display:block"></video>
           <div class="stage-veil" style="background:linear-gradient(180deg, rgba(6,9,16,0.42) 0%, rgba(6,9,16,0.3) 45%, rgba(6,9,16,0.9) 100%)"></div>
-          <div ref="{{ setDangerLight }}" style="position:absolute;left:50%;top:58%;width:78vw;height:66vh;transform:translate(-50%,-50%);background:radial-gradient(circle, rgba(120,185,255,0.5) 0%, rgba(70,135,230,0.18) 34%, rgba(70,135,230,0) 64%);opacity:0;z-index:2;pointer-events:none;mix-blend-mode:screen"></div>
+          <div ref="{{ setDangerLight }}" style="position:absolute;left:50%;top:58%;width:78vw;height:66vh;transform:translate(-50%,-50%);background:radial-gradient(circle, rgba(120,185,255,0.38) 0%, rgba(70,135,230,0.14) 34%, rgba(70,135,230,0) 64%);opacity:0;z-index:2;pointer-events:none"></div>
           <div class="stage-inner" style="gap:clamp(14px,2vw,20px)">
             <span class="wp" ref="{{ setNode }}" style="z-index:4"><span class="num-badge"><x-import component-from-global-scope="SolihaIslamicParentingDesignSystem_1e5f6d.NumberBadge" value="{{ 5 }}" size="md" hint-size="60px,60px"></x-import></span></span>
             <div class="eyebrow" style="color:var(--gold-300)">Опасный участок</div>
@@ -619,7 +619,7 @@ class Component extends DCLogic {
     if (this._L && this.prog) {
       const targetY = (window.scrollY + window.innerHeight / 2) - (this._journeyTop || 0);
       let lo = 0, hi = this._L;
-      for (let i = 0; i < 12; i++) {
+      for (let i = 0; i < 8; i++) {
         const mid = (lo + hi) / 2;
         if (this.prog.getPointAtLength(mid).y < targetY) lo = mid; else hi = mid;
       }
