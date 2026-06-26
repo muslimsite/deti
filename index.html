@@ -288,17 +288,25 @@ class Component extends DCLogic {
     el.muted = true;
     el.loop = true;
     el.playsInline = true;
+    el.preload = "auto";
     const load = () => {
-      fetch("assets/danger-smoke.mp4")
-        .then((r) => { if (!r.ok) throw new Error("no"); return r.blob(); })
-        .then((b) => { el.src = URL.createObjectURL(b); try { el.load(); } catch (e) {} el.play().catch(() => {}); })
-        .catch(() => { el.play().catch(() => {}); });
+      if (el._dloading) return;
+      el._dloading = true;
+      // Set src directly so the browser can stream and buffer while the user
+      // is still scrolling toward the section — no need to wait for full download.
+      el.src = "assets/danger-smoke.mp4";
+      el.load();
+      // Play as soon as enough data is buffered.
+      const tryPlay = () => el.play().catch(() => {});
+      el.addEventListener("canplaythrough", tryPlay, { once: true });
+      // Fallback: start playing even if canplaythrough fires late.
+      setTimeout(tryPlay, 2000);
     };
-    // Lazy: only fetch the clip when the section is ~600px from the viewport.
+    // Start loading when the section is ~2 full screens away so it's ready by scroll.
     if (!("IntersectionObserver" in window)) { load(); return; }
     const io = new IntersectionObserver((ents) => {
       if (ents.some((e) => e.isIntersecting)) { io.disconnect(); load(); }
-    }, { rootMargin: "600px 0px 600px 0px" });
+    }, { rootMargin: "200% 0px 200% 0px" });
     io.observe(el);
   };
   setDangerLight = (el) => { this.dangerLight = el; };
