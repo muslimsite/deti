@@ -33,6 +33,9 @@
   @keyframes smokeRise{0%{transform:translate(0,70px) scale(0.6,0.5);opacity:0}14%{opacity:.6}82%{opacity:.5}100%{transform:translate(-22px,-400px) scale(1.1,1.5);opacity:0}}
   @keyframes smokeRise2{0%{transform:translate(0,70px) scale(0.65,0.55);opacity:0}14%{opacity:.55}82%{opacity:.45}100%{transform:translate(26px,-420px) scale(1.15,1.6);opacity:0}}
   @keyframes quizIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes quizIn1{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes quizIn2{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes quizIn3{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
   @keyframes quizPick{0%{transform:scale(1)}40%{transform:scale(.97)}100%{transform:scale(1)}}
   .quiz-opt{text-align:left;width:100%;padding:14px 18px;border-radius:var(--radius-md);border:1px solid rgba(199,168,107,0.28);background:rgba(255,255,255,0.04);color:var(--text-on-dark);font-family:var(--font-body);font-size:var(--fs-small);line-height:1.6;cursor:pointer;transition:border-color .18s,background .18s,box-shadow .18s}
   .quiz-opt:hover{border-color:rgba(199,168,107,0.7);background:rgba(199,168,107,0.09)}
@@ -148,9 +151,19 @@
     <div class="ms L">
       <span class="ms-node wp" ref="{{ setNode }}"><span class="node-dot"></span></span>
       <div class="ms-card jcard" ref="{{ reveal }}" style="opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)">
-        <x-import component-from-global-scope="SolihaIslamicParentingDesignSystem_1e5f6d.LabelPill" tone="onDark" hint-size="200px,34px">Бесплатный эфир для сестёр</x-import>
-        <p style="margin:16px 0 0;font-size:var(--fs-body);line-height:1.75;color:var(--text-on-dark)">Эфир для сестёр, которые хотят выстроить воспитание детей по Исламу и понять, какие основы заложить в каждом возрасте — чтобы ребёнок вырос праведным мусульманином, несмотря на вызовы современного мира.</p>
-        <div class="datepill" style="margin-top:18px"><span>Бесплатно</span><span class="diam"></span><span>30 июня 2026</span><span class="diam"></span><span>18:00 МСК</span></div>
+        <x-import component-from-global-scope="SolihaIslamicParentingDesignSystem_1e5f6d.LabelPill" tone="onDark" hint-size="200px,34px">Эфир для сестёр</x-import>
+        <p style="margin:14px 0 20px;font-size:var(--fs-body);line-height:1.75;color:var(--text-on-dark)">Эфир для сестёр, которые хотят выстроить воспитание детей по Исламу и понять, какие основы заложить в каждом возрасте — чтобы ребёнок вырос праведным мусульманином, несмотря на вызовы современного мира.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;padding:18px 20px;border-radius:var(--radius-md);background:rgba(199,168,107,0.07);border:1px solid rgba(199,168,107,0.22)">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="display:inline-flex;align-items:center;padding:5px 16px;border-radius:999px;background:var(--gold-gradient);color:#1a1200;font-weight:800;font-size:clamp(13px,2vw,15px);letter-spacing:.1em;text-transform:uppercase">БЕСПЛАТНО</span>
+            <span style="font-size:var(--fs-small);color:var(--text-on-dark-muted)">без регистрационного взноса</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center">
+            <span style="font-size:clamp(22px,4vw,30px);font-family:var(--font-display);font-weight:700;color:var(--gold-400);letter-spacing:.01em;line-height:1.1">30 июня 2026</span>
+            <span style="display:inline-block;width:5px;height:5px;background:var(--gold-500);border-radius:50%;flex-shrink:0;margin-bottom:2px"></span>
+            <span style="font-size:clamp(22px,4vw,30px);font-family:var(--font-display);font-weight:700;color:var(--gold-400);letter-spacing:.01em;line-height:1.1">18:00 МСК</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -195,11 +208,13 @@
                   </sc-for>
                 </div>
               </div>
-              <h3 style="margin:0;font-size:var(--fs-display-3);font-family:var(--font-display);font-weight:600;line-height:1.25">{{ quizQuestion.q }}</h3>
-              <div style="display:flex;flex-direction:column;gap:10px">
-                <sc-for list="{{ quizOpts }}" as="opt">
-                  <button onclick="{{ opt.answer }}" class="quiz-opt {{ opt.picked ? 'picked' : '' }}">{{ opt.text }}</button>
-                </sc-for>
+              <div style="animation:{{ quizAnimKey }} .38s var(--ease-out) both;display:flex;flex-direction:column;gap:16px">
+                <h3 style="margin:0;font-size:var(--fs-display-3);font-family:var(--font-display);font-weight:600;line-height:1.25">{{ quizQuestion.q }}</h3>
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <sc-for list="{{ quizOpts }}" as="opt">
+                    <button onclick="{{ opt.answer }}" class="quiz-opt {{ opt.picked ? 'picked' : '' }}">{{ opt.text }}</button>
+                  </sc-for>
+                </div>
               </div>
             </div>
           </sc-if>
@@ -703,6 +718,7 @@ class Component extends DCLogic {
       quizQuestion,
       quizOpts,
       quizDots: [1, 2, 3].map((i) => ({ active: i <= qStep })),
+      quizAnimKey: "quizIn" + qStep,
       quizResultData: this.state.quizResult != null ? this.QUIZ_RESULTS[this.state.quizResult] : { title: "", text: "" },
       startQuiz: this.startQuiz,
       resetQuiz: this.resetQuiz,
