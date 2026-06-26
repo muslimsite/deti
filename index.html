@@ -240,9 +240,9 @@
       <sc-if value="{{ s.normal }}" hint-placeholder-val="{{ true }}">
         <div class="ms {{ s.sideClass }}">
           <span class="ms-node wp" ref="{{ setNode }}"><span class="num-badge"><x-import component-from-global-scope="SolihaIslamicParentingDesignSystem_1e5f6d.NumberBadge" value="{{ s.n }}" size="md" hint-size="60px,60px"></x-import></span></span>
-          <div class="ms-card jcard" ref="{{ reveal }}" style="opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)">
-            <div class="eyebrow">{{ s.tag }}</div>
-            <p style="margin:10px 0 0;font-size:var(--fs-body);line-height:1.7;color:var(--text-on-dark)">{{ s.text }}</p>
+          <div class="ms-card jcard" ref="{{ reveal }}" style="opacity:0;transform:{{ s.revealDir }};transition:opacity .75s var(--ease-out),transform .75s var(--ease-out)">
+            <div class="eyebrow" ref="{{ reveal }}" data-reveal-delay="120" style="opacity:0;transform:translateY(10px);transition:opacity .6s var(--ease-out),transform .6s var(--ease-out)">{{ s.tag }}</div>
+            <p ref="{{ reveal }}" data-reveal-delay="220" style="opacity:0;transform:translateY(10px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out);margin:10px 0 0;font-size:var(--fs-body);line-height:1.7;color:var(--text-on-dark)">{{ s.text }}</p>
           </div>
         </div>
       </sc-if>
@@ -735,7 +735,7 @@ class Component extends DCLogic {
       ? quizQuestion.opts.map((text, i) => ({ text, answer: () => this.answerQuiz(i), picked: this.state.quizPicked === i }))
       : [];
     return {
-      stations: stations.map((s, i) => ({ ...s, normal: !s.danger, danger: !!s.danger, sideClass: sides[i] })),
+      stations: stations.map((s, i) => ({ ...s, normal: !s.danger, danger: !!s.danger, sideClass: sides[i], revealDir: sides[i] === "R" ? "translateX(40px)" : "translateX(-40px)" })),
       pains,
       results: results.map((text, i) => ({ text, n: i + 1, delay: i * 90 })),
       bio,
