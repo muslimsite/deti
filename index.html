@@ -83,6 +83,9 @@
     .ms.L .ms-node,.ms.R .ms-node{left:28px}
     .ms-card{width:100%}
     .spk-grid{grid-template-columns:1fr;text-align:center;justify-items:center}
+    /* Road and marker go behind content on mobile so they don't cover text */
+    .road-layer{z-index:1}
+    .marker-layer{z-index:1}
   }
   @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.road-marker{animation:none}}
 </style>
