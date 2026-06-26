@@ -48,9 +48,9 @@
   .road-layer svg{width:100%;height:100%;display:block}
   .base-path{fill:none;stroke:rgba(199,168,107,0.42);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:0.5 13}
   .prog-path{fill:none;stroke:#EBDDB6;stroke-width:3.5;stroke-linecap:round}
-  .marker-layer{position:absolute;inset:0;z-index:1;pointer-events:none}
-  .marker-ring-svg{animation:markerRingSvg 2.4s ease-out infinite}
-  @keyframes markerRingSvg{0%{r:11;opacity:.7}100%{r:22;opacity:0}}
+  .road-marker-g{transition:opacity .3s}
+  .marker-ring-svg{transform-box:fill-box;transform-origin:center;animation:markerRingSvg 2.4s ease-out infinite}
+  @keyframes markerRingSvg{0%{transform:scale(1);opacity:.7}100%{transform:scale(2);opacity:0}}
 
   .content{position:relative;z-index:2}
   .nav{position:absolute;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px clamp(18px,5vw,48px)}
@@ -101,20 +101,16 @@
   <div class="road-layer">
     <svg ref="{{ setSvg }}" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <radialGradient id="mgold" cx="35%" cy="35%" r="65%">
+        <radialGradient id="mgold" cx="35%" cy="35%" r="65%" gradientUnits="objectBoundingBox">
           <stop offset="0%" stop-color="#fff8df"/>
           <stop offset="100%" stop-color="#c7a86b"/>
         </radialGradient>
-        <filter id="mglow" x="-80%" y="-80%" width="260%" height="260%">
-          <feGaussianBlur stdDeviation="5" result="blur"/>
-          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
       </defs>
       <path class="base-path" ref="{{ setBase }}"></path>
       <path class="prog-path" ref="{{ setProgress }}"></path>
-      <g ref="{{ setMarker }}" opacity="0" filter="url(#mglow)">
-        <circle r="13" fill="rgba(199,168,107,0.18)" class="marker-ring-svg"/>
-        <circle r="11" fill="url(#mgold)"/>
+      <g ref="{{ setMarker }}" class="road-marker-g">
+        <circle r="13" fill="rgba(199,168,107,0.22)" class="marker-ring-svg"/>
+        <circle r="11" fill="url(#mgold)" style="filter:drop-shadow(0 0 7px rgba(199,168,107,0.8))"/>
       </g>
     </svg>
   </div>
@@ -425,7 +421,7 @@ class Component extends DCLogic {
   setSvg = (el) => { this.svg = el; };
   setBase = (el) => { this.base = el; };
   setProgress = (el) => { this.prog = el; };
-  setMarker = (el) => { this.marker = el; };
+  setMarker = (el) => { this.marker = el; if (el) el.style.opacity = "0"; };
   setStars = (el) => { this.stars = el; };
   setNav = (el) => { this.nav = el; };
   setDanger = (el) => { this.danger = el; };
@@ -596,7 +592,7 @@ class Component extends DCLogic {
       this.prog.style.strokeDasharray = this._L;
       this.prog.style.strokeDashoffset = this._L;
     }
-    if (this.marker) this.marker.setAttribute("opacity", "1");
+    if (this.marker) this.marker.style.opacity = "1";
     // Cache the danger section's document position so the scroll loop never
     // forces layout (getBoundingClientRect) per frame.
     if (this.danger) {
