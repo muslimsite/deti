@@ -236,6 +236,14 @@
       </div>
     </div>
 
+    <div class="ms-center" style="text-align:center;padding-top:clamp(40px,7vw,80px);padding-bottom:clamp(10px,2vw,20px)">
+      <div ref="{{ reveal }}" data-reveal-delay="0" style="opacity:0;transform:translateY(20px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)">
+        <div class="eyebrow" style="margin-bottom:14px">Программа эфира</div>
+        <h2 style="margin:0;font-size:var(--fs-display-2);font-family:var(--font-display);font-weight:600;line-height:1.2">Что будет <span style="font-style:italic;color:var(--gold-400)">на эфире</span></h2>
+        <p ref="{{ reveal }}" data-reveal-delay="120" style="opacity:0;transform:translateY(14px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out);margin:14px auto 0;max-width:520px;font-size:var(--fs-body);line-height:1.7;color:var(--text-on-dark-muted)">Весь эфир построен как маршрут — от старта до финиша. Каждая станция раскрывает один ключевой участок пути исламского воспитания.</p>
+      </div>
+    </div>
+
     <sc-for list="{{ stations }}" as="s" hint-placeholder-count="7">
       <sc-if value="{{ s.normal }}" hint-placeholder-val="{{ true }}">
         <div class="ms {{ s.sideClass }}">
