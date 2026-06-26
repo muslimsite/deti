@@ -42,6 +42,7 @@
   .quiz-opt:hover{border-color:rgba(199,168,107,0.7);background:rgba(199,168,107,0.09)}
   .quiz-opt.picked{border-color:var(--gold-400);background:rgba(199,168,107,0.18);box-shadow:0 0 0 2px rgba(199,168,107,0.35);animation:quizPick .25s ease both}
 
+  x-dc{display:block;opacity:0}
   .journey{position:relative;overflow:hidden;background:radial-gradient(160% 46% at 50% 0%, #18253f 0%, #0e1626 40%, #0b0f18 100%)}
   .stars{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 
@@ -459,6 +460,8 @@ class Component extends DCLogic {
 
   componentDidMount() {
     document.title = "Эфир · Как воспитать ребёнка мусульманином";
+    const root = document.querySelector("x-dc");
+    if (root) { root.style.transition = "opacity .4s"; root.style.opacity = "1"; }
     // Ensure hero video autoplay (muted + loop must be set imperatively)
     setTimeout(() => {
       if (this._video && this._video.paused) this._video.play().catch(() => {});
