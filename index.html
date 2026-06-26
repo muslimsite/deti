@@ -88,6 +88,8 @@
   }
   @media(max-width:879px){
     .ms{padding-left:64px}
+    .ms.ms-centered{padding-left:clamp(20px,5vw,40px);padding-right:clamp(20px,5vw,40px)}
+    .ms.ms-centered .ms-node{left:50%;transform:translateX(-50%);top:auto;bottom:8px}
     .ms.L .ms-node,.ms.R .ms-node{left:28px}
     .ms-card{width:100%}
     .spk-grid{grid-template-columns:1fr;text-align:center;justify-items:center}
@@ -144,9 +146,9 @@
       <span class="wp" ref="{{ setNode }}" style="position:absolute;left:50%;bottom:8px;transform:translateX(-50%);z-index:4"><span class="node-dot"></span></span>
     </section>
 
-    <div class="ms L">
+    <div class="ms L ms-centered">
       <span class="ms-node wp" ref="{{ setNode }}"><span class="node-dot"></span></span>
-      <div class="ms-card jcard" ref="{{ reveal }}" style="opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)">
+      <div class="ms-card jcard" ref="{{ reveal }}" style="opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out);text-align:center">
         <x-import component-from-global-scope="SolihaIslamicParentingDesignSystem_1e5f6d.LabelPill" tone="onDark" hint-size="200px,34px">Эфир для сестёр</x-import>
         <p style="margin:14px 0 20px;font-size:var(--fs-body);line-height:1.75;color:var(--text-on-dark)">Эфир для сестёр, которые хотят выстроить воспитание детей по Исламу и понять, какие основы заложить в каждом возрасте — чтобы ребёнок вырос праведным мусульманином, несмотря на вызовы современного мира.</p>
         <div style="display:flex;flex-direction:column;gap:12px;padding:20px;border-radius:var(--radius-md);background:rgba(199,168,107,0.07);border:1px solid rgba(199,168,107,0.22);align-items:center;text-align:center">
