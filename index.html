@@ -46,8 +46,8 @@
   .base-path{fill:none;stroke:rgba(199,168,107,0.42);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:0.5 13}
   .prog-path{fill:none;stroke:#EBDDB6;stroke-width:3.5;stroke-linecap:round}
   .marker-layer{position:absolute;inset:0;z-index:1;pointer-events:none}
-  .road-marker{position:absolute;top:0;left:0;width:22px;height:22px;border-radius:50%;background:var(--gold-gradient);opacity:0;will-change:transform;box-shadow:0 0 16px 5px rgba(199,168,107,0.7)}
-  .road-marker::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:2px solid rgba(199,168,107,0.5);animation:markerRing 2.4s ease-out infinite}
+  .marker-ring-svg{animation:markerRingSvg 2.4s ease-out infinite}
+  @keyframes markerRingSvg{0%{r:11;opacity:.7}100%{r:22;opacity:0}}
 
   .content{position:relative;z-index:2}
   .nav{position:absolute;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px clamp(18px,5vw,48px)}
@@ -97,11 +97,24 @@
   <div class="stars" ref="{{ setStars }}"></div>
   <div class="road-layer">
     <svg ref="{{ setSvg }}" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="mgold" cx="35%" cy="35%" r="65%">
+          <stop offset="0%" stop-color="#fff8df"/>
+          <stop offset="100%" stop-color="#c7a86b"/>
+        </radialGradient>
+        <filter id="mglow" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="5" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
       <path class="base-path" ref="{{ setBase }}"></path>
       <path class="prog-path" ref="{{ setProgress }}"></path>
+      <g ref="{{ setMarker }}" opacity="0" filter="url(#mglow)">
+        <circle r="13" fill="rgba(199,168,107,0.18)" class="marker-ring-svg"/>
+        <circle r="11" fill="url(#mgold)"/>
+      </g>
     </svg>
   </div>
-  <div class="marker-layer"><div class="road-marker" ref="{{ setMarker }}"></div></div>
 
   <nav class="nav" ref="{{ setNav }}">
     <div style="display:flex;align-items:center;gap:11px">
@@ -568,7 +581,7 @@ class Component extends DCLogic {
       this.prog.style.strokeDasharray = this._L;
       this.prog.style.strokeDashoffset = this._L;
     }
-    if (this.marker) this.marker.style.opacity = "1";
+    if (this.marker) this.marker.setAttribute("opacity", "1");
     // Cache the danger section's document position so the scroll loop never
     // forces layout (getBoundingClientRect) per frame.
     if (this.danger) {
@@ -588,7 +601,7 @@ class Component extends DCLogic {
       }
       const len = Math.max(0, Math.min(this._L, (lo + hi) / 2));
       const pt = this.prog.getPointAtLength(len);
-      if (this.marker) this.marker.style.transform = "translate(" + pt.x + "px," + pt.y + "px) translate(-50%,-50%)";
+      if (this.marker) this.marker.setAttribute("transform", "translate(" + pt.x + "," + pt.y + ")");
       this.prog.style.strokeDashoffset = this._L - len;
       if (this._pts) {
         for (const q of this._pts) {
