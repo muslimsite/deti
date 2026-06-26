@@ -130,7 +130,7 @@
   <div class="content">
 
     <section class="stage">
-      <video ref="{{ setVideo }}" autoplay="{{ true }}" muted="{{ true }}" loop="{{ true }}" playsinline="{{ true }}" preload="auto" poster="assets/hero.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;display:block"></video>
+      <video ref="{{ setVideo }}" muted="{{ true }}" loop="{{ true }}" playsinline="{{ true }}" preload="auto" poster="assets/hero.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;display:none"></video>
       <div class="stage-veil" style="background:linear-gradient(180deg, rgba(11,15,24,0.46) 0%, rgba(11,15,24,0.32) 44%, rgba(11,15,24,0.95) 100%)"></div>
       <div class="stage-inner">
         <span ref="{{ reveal }}" data-reveal-delay="{{ 0 }}" style="opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out)">
@@ -256,7 +256,7 @@
       </sc-if>
       <sc-if value="{{ s.danger }}" hint-placeholder-val="{{ true }}">
         <section class="stage" ref="{{ setDanger }}">
-          <video ref="{{ setDangerVideo }}" muted="{{ true }}" loop="{{ true }}" playsinline="{{ true }}" preload="none" poster="assets/danger-phone.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;display:block"></video>
+          <video ref="{{ setDangerVideo }}" muted="{{ true }}" loop="{{ true }}" playsinline="{{ true }}" preload="none" poster="assets/danger-phone.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;display:none"></video>
           <div class="stage-veil" style="background:linear-gradient(180deg, rgba(6,9,16,0.42) 0%, rgba(6,9,16,0.3) 45%, rgba(6,9,16,0.9) 100%)"></div>
           <div ref="{{ setDangerLight }}" style="position:absolute;left:50%;top:58%;width:78vw;height:66vh;transform:translate(-50%,-50%);background:radial-gradient(circle, rgba(120,185,255,0.38) 0%, rgba(70,135,230,0.14) 34%, rgba(70,135,230,0) 64%);opacity:0;z-index:2;pointer-events:none"></div>
           <div class="stage-inner" style="gap:clamp(14px,2vw,20px)">
@@ -418,10 +418,8 @@ class Component extends DCLogic {
     el.muted = true;
     el.loop = true;
     el.playsInline = true;
+    el.style.display = "block";
     const play = () => { try { el.load(); } catch (e) {} el.play().catch(() => {}); };
-    // The preview file-server doesn't support range requests, which <video> needs to
-    // stream. Fetch the whole file and play it from an in-memory blob URL instead.
-    // If that fails (e.g. a bundled standalone file), fall back to the inline <source>.
     fetch("assets/hero.mp4")
       .then((r) => { if (!r.ok) throw new Error("no"); return r.blob(); })
       .then((b) => { el.src = URL.createObjectURL(b); play(); })
@@ -441,6 +439,7 @@ class Component extends DCLogic {
     el.loop = true;
     el.playsInline = true;
     el.preload = "auto";
+    el.style.display = "block";
     const load = () => {
       if (el._dloading) return;
       el._dloading = true;
