@@ -33,6 +33,10 @@
   @keyframes smokeRise{0%{transform:translate(0,70px) scale(0.6,0.5);opacity:0}14%{opacity:.6}82%{opacity:.5}100%{transform:translate(-22px,-400px) scale(1.1,1.5);opacity:0}}
   @keyframes smokeRise2{0%{transform:translate(0,70px) scale(0.65,0.55);opacity:0}14%{opacity:.55}82%{opacity:.45}100%{transform:translate(26px,-420px) scale(1.15,1.6);opacity:0}}
   @keyframes quizIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes quizPick{0%{transform:scale(1)}40%{transform:scale(.97)}100%{transform:scale(1)}}
+  .quiz-opt{text-align:left;width:100%;padding:14px 18px;border-radius:var(--radius-md);border:1px solid rgba(199,168,107,0.28);background:rgba(255,255,255,0.04);color:var(--text-on-dark);font-family:var(--font-body);font-size:var(--fs-small);line-height:1.6;cursor:pointer;transition:border-color .18s,background .18s,box-shadow .18s}
+  .quiz-opt:hover{border-color:rgba(199,168,107,0.7);background:rgba(199,168,107,0.09)}
+  .quiz-opt.picked{border-color:var(--gold-400);background:rgba(199,168,107,0.18);box-shadow:0 0 0 2px rgba(199,168,107,0.35);animation:quizPick .25s ease both}
 
   .journey{position:relative;overflow:hidden;background:radial-gradient(160% 46% at 50% 0%, #18253f 0%, #0e1626 40%, #0b0f18 100%)}
   .stars{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
@@ -181,7 +185,7 @@
               <h3 style="margin:0;font-size:var(--fs-display-3);font-family:var(--font-display);font-weight:600;line-height:1.25">{{ quizQuestion.q }}</h3>
               <div style="display:flex;flex-direction:column;gap:10px">
                 <sc-for list="{{ quizOpts }}" as="opt">
-                  <button onclick="{{ opt.answer }}" style="text-align:left;width:100%;padding:14px 18px;border-radius:var(--radius-md);border:1px solid rgba(199,168,107,0.28);background:rgba(255,255,255,0.04);color:var(--text-on-dark);font-family:var(--font-body);font-size:var(--fs-small);line-height:1.6;cursor:pointer;transition:border-color .18s,background .18s" style-hover="border-color:rgba(199,168,107,0.7);background:rgba(199,168,107,0.09)">{{ opt.text }}</button>
+                  <button onclick="{{ opt.answer }}" class="quiz-opt {{ opt.picked ? 'picked' : '' }}">{{ opt.text }}</button>
                 </sc-for>
               </div>
             </div>
@@ -311,7 +315,7 @@ class Component extends DCLogic {
   // (или установите через твик "tgBotUrl" в редакторе).
   TG_BOT_URL_PLACEHOLDER = "https://r.bothelp.io/tg?domain=Detisestram_bot&start=c1782168593416-ds&utm_source=telegram_ads&utm_medium=target&utm_campaign=side";
 
-  state = { name: "", contact: "", status: "idle", quizStep: 0, quizAnswers: [], quizResult: null };
+  state = { name: "", contact: "", status: "idle", quizStep: 0, quizAnswers: [], quizResult: null, quizPicked: null };
 
   QUIZ = [
     {
@@ -355,19 +359,23 @@ class Component extends DCLogic {
     },
   ];
 
-  startQuiz = () => this.setState({ quizStep: 1, quizAnswers: [], quizResult: null });
-  resetQuiz = () => this.setState({ quizStep: 0, quizAnswers: [], quizResult: null });
+  startQuiz = () => this.setState({ quizStep: 1, quizAnswers: [], quizResult: null, quizPicked: null });
+  resetQuiz = () => this.setState({ quizStep: 0, quizAnswers: [], quizResult: null, quizPicked: null });
 
   answerQuiz = (idx) => {
-    const answers = [...(this.state.quizAnswers || []), idx];
-    if (answers.length < this.QUIZ.length) {
-      this.setState({ quizStep: this.state.quizStep + 1, quizAnswers: answers });
-    } else {
-      const counts = [0, 0, 0];
-      answers.forEach((a) => counts[a]++);
-      const result = counts.indexOf(Math.max(...counts));
-      this.setState({ quizStep: 99, quizAnswers: answers, quizResult: result });
-    }
+    if (this.state.quizPicked != null) return;
+    this.setState({ quizPicked: idx });
+    setTimeout(() => {
+      const answers = [...(this.state.quizAnswers || []), idx];
+      if (answers.length < this.QUIZ.length) {
+        this.setState({ quizStep: this.state.quizStep + 1, quizAnswers: answers, quizPicked: null });
+      } else {
+        const counts = [0, 0, 0];
+        answers.forEach((a) => counts[a]++);
+        const result = counts.indexOf(Math.max(...counts));
+        this.setState({ quizStep: 99, quizAnswers: answers, quizResult: result, quizPicked: null });
+      }
+    }, 320);
   };
 
   setJourney = (el) => { this.journey = el; };
@@ -661,7 +669,7 @@ class Component extends DCLogic {
     const qStep = this.state.quizStep;
     const quizQuestion = (qStep >= 1 && qStep <= 3) ? this.QUIZ[qStep - 1] : null;
     const quizOpts = quizQuestion
-      ? quizQuestion.opts.map((text, i) => ({ text, answer: () => this.answerQuiz(i) }))
+      ? quizQuestion.opts.map((text, i) => ({ text, answer: () => this.answerQuiz(i), picked: this.state.quizPicked === i }))
       : [];
     return {
       stations: stations.map((s, i) => ({ ...s, normal: !s.danger, danger: !!s.danger, sideClass: sides[i] })),
