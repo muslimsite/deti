@@ -318,7 +318,7 @@ class Component extends DCLogic {
       q: "Что сейчас сложнее всего в воспитании своего ребёнка по Исламу?",
       opts: [
         "Не знаю, с чего начать и на что обращать внимание в первую очередь",
-        "Стараюсь, но не понимаю — правильно ли делаю и что сейчас важнее всего",
+        "Непонимание — не знаю, правильно ли я всё делаю и что сейчас важнее всего",
         "Удержать ребёнка от влияния телефона, интернета и окружения",
       ],
     },
@@ -333,9 +333,9 @@ class Component extends DCLogic {
     {
       q: "Что хотите забрать с эфира?",
       opts: [
-        "Отправную точку — с чего начать и куда двигаться",
-        "Целостную систему и ориентиры по возрастам",
-        "Понять, как защитить ребёнка в современном мире",
+        "Отправную точку — с чего начать воспитание по Исламу",
+        "Систему исламского воспитания и ориентиры по возрастам",
+        "Понять, как защитить ребёнка от влияния мира, не теряя основ Ислама",
       ],
     },
   ];
@@ -543,6 +543,7 @@ class Component extends DCLogic {
   _build() {
     if (!this.journey || !this.svg || !this._nodes || this._nodes.length < 2) return;
     const jr = this.journey.getBoundingClientRect();
+    this._journeyTop = jr.top + window.pageYOffset;
     const W = this.journey.offsetWidth;
     const H = this.journey.offsetHeight;
     const pts = this._nodes.map((n) => {
@@ -571,9 +572,13 @@ class Component extends DCLogic {
 
   _update() {
     if (this._L && this.prog) {
-      const scn = document.documentElement.scrollHeight - window.innerHeight;
-      const p = scn > 0 ? Math.max(0, Math.min(1, window.scrollY / scn)) : 0;
-      const len = p * this._L;
+      const targetY = (window.scrollY + window.innerHeight / 2) - (this._journeyTop || 0);
+      let lo = 0, hi = this._L;
+      for (let i = 0; i < 12; i++) {
+        const mid = (lo + hi) / 2;
+        if (this.prog.getPointAtLength(mid).y < targetY) lo = mid; else hi = mid;
+      }
+      const len = Math.max(0, Math.min(this._L, (lo + hi) / 2));
       const pt = this.prog.getPointAtLength(len);
       if (this.marker) this.marker.style.transform = "translate(" + pt.x + "px," + pt.y + "px) translate(-50%,-50%)";
       this.prog.style.strokeDashoffset = this._L - len;
