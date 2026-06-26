@@ -422,7 +422,7 @@ class Component extends DCLogic {
   setSvg = (el) => { this.svg = el; };
   setBase = (el) => { this.base = el; };
   setProgress = (el) => { this.prog = el; };
-  setMarker = (el) => { this.marker = el; if (el) el.style.opacity = "0"; };
+  setMarker = (el) => { if (!el || this.marker === el) return; this.marker = el; el.style.opacity = "0"; };
   setStars = (el) => { this.stars = el; };
   setNav = (el) => { this.nav = el; };
   setDanger = (el) => { this.danger = el; };
@@ -531,8 +531,16 @@ class Component extends DCLogic {
     // Observe the whole body so any layout shift (fonts, design-system bundle, images)
     // triggers a path rebuild, even when the journey container height is unchanged.
     if (typeof ResizeObserver !== "undefined") {
-      this._ro = new ResizeObserver(() => { clearTimeout(this._rot); this._rot = setTimeout(() => this._build(), 80); });
-      this._ro.observe(document.body);
+      let _prevW = 0, _prevH = 0;
+      this._ro = new ResizeObserver(() => {
+        if (!this.journey) return;
+        const w = this.journey.offsetWidth, h = this.journey.offsetHeight;
+        if (w === _prevW && h === _prevH) return;
+        _prevW = w; _prevH = h;
+        clearTimeout(this._rot);
+        this._rot = setTimeout(() => this._build(), 120);
+      });
+      this._ro.observe(this.journey || document.body);
     }
     // Rebuild once on first scroll/touch — by then all custom elements are settled.
     const onFirst = () => { this._build(); };
