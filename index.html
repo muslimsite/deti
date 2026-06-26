@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/soliha-islamic-parenting-design-system-1e5f6d0d-f06e-4259-a74d-f16461b82cdb/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/soliha-islamic-parenting-design-system-1e5f6d0d-f06e-4259-a74d-f16461b82cdb/tokens/colors.css">
+<link rel="stylesheet" href="_ds/soliha-islamic-parenting-design-system-1e5f6d0d-f06e-4259-a74d-f16461b82cdb/tokens/typography.css">
+<link rel="stylesheet" href="_ds/soliha-islamic-parenting-design-system-1e5f6d0d-f06e-4259-a74d-f16461b82cdb/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/soliha-islamic-parenting-design-system-1e5f6d0d-f06e-4259-a74d-f16461b82cdb/tokens/effects.css">
+<link rel="stylesheet" href="_ds/soliha-islamic-parenting-design-system-1e5f6d0d-f06e-4259-a74d-f16461b82cdb/styles.css">
+<script src="_ds/soliha-islamic-parenting-design-system-1e5f6d0d-f06e-4259-a74d-f16461b82cdb/_ds_bundle.js"></script>
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:#0b0f18;color:var(--text-on-dark);font-family:var(--font-body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  img{display:block;max-width:100%}
+  input::placeholder{color:rgba(246,241,231,0.42)}
+  input:focus{outline:none}
+  h1,h2,h3{font-family:var(--font-display);font-weight:600;margin:0;line-height:1.14;letter-spacing:-0.01em}
+  p{margin:0}
+  ul{margin:0;padding:0;list-style:none}
+
+  @keyframes twk{0%,100%{opacity:.14}50%{opacity:.8}}
+  @keyframes scrollBob{0%{transform:translateX(-50%) translateY(0);opacity:.4}50%{transform:translateX(-50%) translateY(9px);opacity:1}100%{transform:translateX(-50%) translateY(0);opacity:.4}}
+  @keyframes markerRing{0%{transform:scale(0.6);opacity:.7}100%{transform:scale(1.9);opacity:0}}
+  @keyframes dangerZoom{0%{transform:scale(1.05)}50%{transform:scale(1.13)}100%{transform:scale(1.05)}}
+  @keyframes smokeRise{0%{transform:translate(0,70px) scale(0.6,0.5);opacity:0}14%{opacity:.6}82%{opacity:.5}100%{transform:translate(-22px,-400px) scale(1.1,1.5);opacity:0}}
+  @keyframes smokeRise2{0%{transform:translate(0,70px) scale(0.65,0.55);opacity:0}14%{opacity:.55}82%{opacity:.45}100%{transform:translate(26px,-420px) scale(1.15,1.6);opacity:0}}
+
+  .journey{position:relative;overflow:hidden;background:radial-gradient(160% 46% at 50% 0%, #18253f 0%, #0e1626 40%, #0b0f18 100%)}
+  .stars{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+
+  .road-layer{position:absolute;inset:0;z-index:6;pointer-events:none}
+  .road-layer svg{width:100%;height:100%;display:block}
+  .base-path{fill:none;stroke:rgba(199,168,107,0.42);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:0.5 13}
+  .prog-path{fill:none;stroke:#EBDDB6;stroke-width:3.5;stroke-linecap:round}
+  .marker-layer{position:absolute;inset:0;z-index:7;pointer-events:none}
+  .road-marker{position:absolute;top:0;left:0;width:22px;height:22px;border-radius:50%;background:var(--gold-gradient);opacity:0;will-change:transform;box-shadow:0 0 16px 5px rgba(199,168,107,0.7)}
+  .road-marker::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:2px solid rgba(199,168,107,0.5);animation:markerRing 2.4s ease-out infinite}
+
+  .content{position:relative;z-index:2}
+  .nav{position:absolute;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px clamp(18px,5vw,48px)}
+  .nav.stuck{position:fixed;background:rgba(11,15,24,0.6);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line-on-dark)}
+
+  .stage{position:relative;min-height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:clamp(64px,9vw,110px) clamp(20px,5vw,40px)}
+  .stage-bg{position:absolute;inset:0;z-index:0;background-size:cover}
+  .stage-veil{position:absolute;inset:0;z-index:1}
+  .stage-inner{position:relative;z-index:3;max-width:880px;margin:0 auto;text-align:center;display:flex;flex-direction:column;align-items:center;gap:clamp(15px,2.4vw,24px)}
+
+  .ms{position:relative;max-width:1140px;margin:0 auto;padding:clamp(46px,7vw,88px) clamp(20px,5vw,40px);min-height:clamp(300px,44vh,440px);display:flex;align-items:center}
+  .ms-center{position:relative;max-width:1140px;margin:0 auto;padding:clamp(56px,8vw,96px) clamp(20px,5vw,40px)}
+  .ms-node{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:4}
+  .node-dot{display:block;width:16px;height:16px;border-radius:50%;background:var(--gold-gradient);box-shadow:0 0 0 5px rgba(199,168,107,0.12),0 0 16px rgba(199,168,107,0.6);transition:box-shadow .45s var(--ease-out),transform .45s var(--ease-out)}
+  .num-badge{display:inline-flex;border-radius:50%;transition:box-shadow .45s var(--ease-out),transform .45s var(--ease-out)}
+  .wp.active .node-dot{box-shadow:0 0 0 8px rgba(199,168,107,0.2),0 0 26px rgba(199,168,107,0.95);transform:scale(1.18)}
+  .wp.active .num-badge{box-shadow:0 0 0 9px rgba(199,168,107,0.16),0 0 30px rgba(199,168,107,0.6);transform:scale(1.06)}
+
+  .ms-card{position:relative;z-index:2;width:100%}
+  .jcard{background:rgba(16,25,44,0.85);border:1px solid rgba(199,168,107,0.26);border-radius:var(--radius-lg);padding:clamp(22px,3vw,34px);box-shadow:0 26px 64px rgba(0,0,0,0.46)}
+  .eyebrow{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-400)}
+  .datepill{display:inline-flex;align-items:center;gap:clamp(8px,1.6vw,14px);flex-wrap:wrap;justify-content:center;padding:11px 20px;border:1px solid rgba(199,168,107,0.42);border-radius:var(--radius-pill);background:rgba(199,168,107,0.08);font-size:var(--fs-small);letter-spacing:.03em;color:var(--text-on-dark)}
+  .diam{width:6px;height:6px;background:var(--gold-500);transform:rotate(45deg);display:inline-block;flex-shrink:0}
+  .bullet{width:9px;height:9px;margin-top:7px;background:var(--gold-gradient);transform:rotate(45deg);border-radius:1px;flex-shrink:0;display:inline-block}
+  .field{width:100%;padding:15px 18px;border-radius:var(--radius-md);border:1px solid rgba(199,168,107,0.32);background:rgba(255,255,255,0.05);color:var(--text-on-dark);font-family:var(--font-body);font-size:var(--fs-body)}
+  .field:focus{border-color:var(--gold-400);box-shadow:0 0 0 3px rgba(199,168,107,0.18)}
+
+  @media(min-width:880px){
+    .ms{min-height:clamp(360px,54vh,520px)}
+    .ms.L .ms-node{left:15%}
+    .ms.R .ms-node{left:85%}
+    .ms.L .ms-card{margin-left:auto;width:58%;max-width:486px}
+    .ms.R .ms-card{margin-right:auto;width:58%;max-width:486px}
+    .spk-grid{grid-template-columns:auto 1fr;text-align:left}
+  }
+  @media(max-width:879px){
+    .ms{padding-left:64px}
+    .ms.L .ms-node,.ms.R .ms-node{left:28px}
+    .ms-card{width:100%}
+    .spk-grid{grid-template-columns:1fr;text-align:center;justify-items:center}
+  }
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.road-marker{animation:none}}
+</style>
+</helmet>
+
+<div class="journey" ref="{{ setJourney }}">
+  <div class="stars" ref="{{ setStars }}"></div>
+  <div class="road-layer">
+    <svg ref="{{ setSvg }}" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path class="base-path" ref="{{ setBase }}"></path>
+      <path class="prog-path" ref="{{ setProgress }}"></path>
+    </svg>
+  </div>
+  <div class="marker-layer"><div class="road-marker" ref="{{ setMarker }}"></div></div>
+
+  <nav class="nav" ref="{{ setNav }}">
+    <div style="display:flex;align-items:center;gap:11px">
+      <span style="width:13px;height:13px;background:var(--gold-gradient);transform:rotate(45deg);box-shadow:var(--shadow-gold);border-radius:2px"></span>
+      <span style="font-family:var(--font-display);font-style:italic;font-size:17px;font-weight:600;letter-spacing:.01em;color:var(--gold-400)">Солиха умм Муса</span>
+    </div>
+    <span style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-400)">30 июня · 18:00 МСК</span>
+  </nav>
+
+  <div class="content">
+
+    <section class="stage">
+      <video ref="{{ setVideo }}" autoplay="{{ true }}" muted="{{ true }}" loop="{{ true }}" playsinline="{{ true }}" preload="auto" poster="assets/hero.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;display:block"></video>
+      <div class="stage-veil" style="background:linear-gradient(180deg, rgba(11,15,24,0.46) 0%, rgba(11,15,24,0.32) 44%, rgba(11,15,24,0.95) 100%)"></div>
+      <div class="stage-inner">
+        <span ref="{{ reveal }}" data-reveal-delay="{{ 0 }}" style="opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out)">
+          <x-import component-from-global-scope="SolihaIslamicParentingDesignSystem_1e5f6d.LabelPill" tone="onDark" hint-size="200px,34px">Маршрут начинается</x-import>
+        </span>
+        <h1 ref="{{ reveal }}" data-reveal-delay="{{ 110 }}" style="opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out);font-size:var(--fs-display-1);text-shadow:0 2px 34px rgba(0,0,0,0.5)">Как воспитать <span style="font-style:italic;color:var(--gold-400)">ребёнка мусульманином</span> в современном мире</h1>
+        <p ref="{{ reveal }}" data-reveal-delay="{{ 200 }}" style="opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out);max-width:560px;font-size:var(--fs-lead);line-height:1.7;color:var(--text-on-dark)">Аллах доверил нам не просто воспитать ребёнка. Он доверил нам провести его по пути, ведущему к Нему. Прокрутите вниз и начните этот маршрут сейчас.</p>
+      </div>
+      <div style="position:absolute;left:50%;bottom:18px;z-index:10;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:9px;color:var(--gold-400)">
+        <span style="font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--text-on-dark);background:rgba(0,0,0,0.38);padding:4px 12px;border-radius:999px;white-space:nowrap">начните маршрут</span>
+        <span style="width:22px;height:34px;border:1.5px solid rgba(199,168,107,0.55);border-radius:999px;position:relative;display:inline-block">
+          <span style="position:absolute;left:50%;top:7px;width:4px;height:7px;border-radius:2px;background:var(--gold-400);transform:translateX(-50%);animation:scrollBob 1.7s var(--ease-out) infinite"></span>
+        </span>
+      </div>
+      <span class="wp" ref="{{ setNode }}" style="position:absolute;left:50%;bottom:8px;transform:translateX(-50%);z-index:4"><span class="node-dot"></span></span>
+    </section>
+
+    <div class="ms L">
+      <span class="ms-node wp" ref="{{ setNode }}"><span class="node-dot"></span></span>
+      <div class="ms-card jcard" ref="{{ reveal }}" style="opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)">
+        <x-import component-from-global-scope="SolihaIslamicParentingDesignSystem_1e5f6d.LabelPill" tone="onDark" hint-size="200px,34px">Бесплатный эфир для сестёр</x-import>
+        <p style="margin:16px 0 0;font-size:var(--fs-body);line-height:1.75;color:var(--text-on-dark)">Эфир для сестёр, которые хотят выстроить воспитание детей по Исламу и понять, какие основы заложить в каждом возрасте — чтобы ребёнок вырос праведным мусульманином, несмотря на вызовы современного мира.</p>
+        <div class="datepill" style="margin-top:18px"><span>Бесплатно</span><span class="diam"></span><span>30 июня 2026</span><span class="diam"></span><span>18:00 МСК</span></div>
+      </div>
+    </div>
+
+    <div class="ms R">
+      <span class="ms-node wp" ref="{{ setNode }}"><span class="node-dot"></span></span>
+      <div class="ms-card jcard">
+        <div class="eyebrow" ref="{{ reveal }}" style="opacity:0;transform:translateY(20px);transition:opacity .6s var(--ease-out),transform .6s var(--ease-out)">Развилка</div>
+        <h2 ref="{{ reveal }}" data-reveal-delay="{{ 60 }}" style="opacity:0;transform:translateY(20px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out);margin:10px 0 0;font-size:var(--fs-display-3)">Этот эфир для вас, если вы едете этот путь <span style="font-style:italic;color:var(--gold-400)">без карты</span></h2>
+        <p ref="{{ reveal }}" data-reveal-delay="{{ 130 }}" style="opacity:0;transform:translateY(20px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out);margin:12px 0 0;font-size:var(--fs-body);line-height:1.7;color:var(--text-on-dark-muted)">Воспитание — длинная дорога. И сколько бы детей ни было, на ней встречаются повороты, где непонятно, как правильно. Узнаёте себя хотя бы в одном?</p>
+        <ul style="margin-top:18px;display:flex;flex-direction:column;gap:13px">
+          <sc-for list="{{ pains }}" as="pain" hint-placeholder-count="6">
+            <li ref="{{ reveal }}" data-reveal-delay="{{ pain.delay }}" style="opacity:0;transform:translateX(-18px);transition:opacity .6s var(--ease-out),transform .6s var(--ease-out);display:flex;gap:13px;align-items:flex-start"><span class="bullet" style="margin-top:0;flex-shrink:0"></span><span style="font-size:var(--fs-small);line-height:1.65;color:var(--text-on-dark)">{{ pain.text }}</span></li>
+          </sc-for>
+        </ul>
+      </div>
+    </div>
+
+    <sc-for list="{{ stations }}" as="s" hint-placeholder-count="7">
+      <sc-if value="{{ s.normal }}" hint-placeholder-val="{{ true }}">
+        <div class="ms {{ s.sideClass }}">
+          <span class="ms-node wp" ref="{{ setNode }}"><span class="num-badge"><x-import component-from-global-scope="SolihaIslamicParentingDesignSystem_1e5f6d.NumberBadge" value="{{ s.n }}" size="md" hint-size="60px,60px"></x-import></span></span>
+          <div class="ms-card jcard" ref="{{ reveal }}" style="opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)">
+            <div class="eyebrow">{{ s.tag }}</div>
+            <p style="margin:10px 0 0;font-size:var(--fs-body);line-height:1.7;color:var(--text-on-dark)">{{ s.text }}</p>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ s.danger }}" hint-placeholder-val="{{ true }}">
+        <section class="stage" ref="{{ setDanger }}">
+          <video ref="{{ setDangerVideo }}" muted="{{ true }}" loop="{{ true }}" playsinline="{{ true }}" preload="none" poster="assets/danger-phone.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;display:block"></video>
+          <div class="stage-veil" style="background:linear-gradient(180deg, rgba(6,9,16,0.42) 0%, rgba(6,9,16,0.3) 45%, rgba(6,9,16,0.9) 100%)"></div>
+          <div ref="{{ setDangerLight }}" style="position:absolute;left:50%;top:58%;width:78vw;height:66vh;transform:translate(-50%,-50%);background:radial-gradient(circle, rgba(120,185,255,0.5) 0%, rgba(70,135,230,0.18) 34%, rgba(70,135,230,0) 64%);opacity:0;z-index:2;pointer-events:none;mix-blend-mode:screen"></div>
+          <div class="stage-inner" style="gap:clamp(14px,2vw,20px)">
+            <span class="wp" ref="{{ setNode }}" style="z-index:4"><span class="num-badge"><x-import component-from-global-scope="SolihaIslamicParentingDesignSystem_1e5f6d.NumberBadge" value="{{ 5 }}" size="md" hint-size="60px,60px"></x-import></span></span>
+            <div class="eyebrow" style="color:var(--gold-300)">Опасный участок</div>
+            <h2 ref="{{ reveal }}" style="opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out);font-size:var(--fs-display-2);text-shadow:0 2px 30px rgba(0,0,0,0.6)">Современные угрозы <span style="font-style:italic;color:var(--gold-300)">на пути</span></h2>
+            <p ref="{{ reveal }}" data-reveal-delay="{{ 120 }}" style="opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out);max-width:560px;font-size:var(--fs-lead);line-height:1.7;color:var(--text-on-dark)">Как современные угрозы влияют на воспитание — и что родители могут сделать уже сегодня, чтобы пройти этот участок и не потерять ребёнка.</p>
+          </div>
+        </section>
+      </sc-if>
+    </sc-for>
+
+    <section class="ms-center">
+      <span class="ms-node wp" ref="{{ setNode }}" style="top:42px"><span class="node-dot"></span></span>
+      <div class="jcard spk-grid" ref="{{ reveal }}" style="opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out);max-width:920px;margin:0 auto;display:grid;gap:clamp(24px,4vw,48px);align-items:center">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center">
+          <span style="width:clamp(160px,24vw,220px);height:clamp(160px,24vw,220px);border-radius:50%;padding:5px;background:var(--gold-gradient);box-shadow:var(--shadow-gold);display:flex;flex-shrink:0">
+            <img src="assets/author-avatar.png" alt="Солиха умм Муса" style="width:100%;height:100%;object-fit:cover;border-radius:50%;background:var(--cream-50);display:block">
+          </span>
+          <div>
+            <div style="font-family:var(--font-display);font-size:clamp(1.4rem,2.6vw,1.85rem);font-weight:600">Солиха Умм Муса</div>
+            <div style="margin-top:6px;font-size:var(--fs-small);color:var(--text-on-dark-muted)">проект «Сёстрам» · мама шестерых детей</div>
+          </div>
+        </div>
+        <div>
+          <x-import component-from-global-scope="SolihaIslamicParentingDesignSystem_1e5f6d.LabelPill" tone="onDark" hint-size="120px,34px">Кто проведёт вас</x-import>
+          <h2 style="margin:14px 0 20px;font-size:var(--fs-display-3)">Ваш проводник <span style="font-style:italic;color:var(--gold-400)">по маршруту</span></h2>
+          <ul style="display:flex;flex-direction:column;gap:13px">
+            <sc-for list="{{ bio }}" as="item" hint-placeholder-count="4">
+              <li style="display:flex;gap:13px;align-items:flex-start"><span class="bullet"></span><span style="font-size:var(--fs-small);line-height:1.65;color:var(--text-on-dark)">{{ item }}</span></li>
+            </sc-for>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="stage" style="min-height:auto;padding-top:clamp(80px,11vw,140px);padding-bottom:clamp(80px,11vw,140px)">
+      <div class="stage-bg" style="background-image:url('assets/backdrop.png');background-position:center;opacity:0.5"></div>
+      <div class="stage-veil" style="background:linear-gradient(180deg, rgba(11,15,24,0.82) 0%, rgba(11,15,24,0.66) 50%, rgba(11,15,24,0.9) 100%)"></div>
+      <div class="stage-inner" style="max-width:760px">
+        <span class="wp" ref="{{ setNode }}" style="z-index:4"><span class="node-dot"></span></span>
+        <x-import component-from-global-scope="SolihaIslamicParentingDesignSystem_1e5f6d.LabelPill" tone="onDark" hint-size="140px,34px">Пункт назначения</x-import>
+        <h2 ref="{{ reveal }}" style="opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out);font-size:var(--fs-display-2)">Куда вы <span style="font-style:italic;color:var(--gold-400)">приедете</span></h2>
+        <ul style="margin-top:14px;width:100%;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;text-align:left">
+          <sc-for list="{{ results }}" as="r" hint-placeholder-count="4">
+            <li ref="{{ reveal }}" data-reveal-delay="{{ r.delay }}" style="opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)">
+              <div class="jcard" style="height:100%;display:flex;gap:15px;align-items:flex-start;padding:20px 22px">
+                <x-import component-from-global-scope="SolihaIslamicParentingDesignSystem_1e5f6d.NumberBadge" value="{{ r.n }}" size="sm" hint-size="44px,44px"></x-import>
+                <span style="font-size:var(--fs-small);line-height:1.65;color:var(--text-on-dark)">{{ r.text }}</span>
+              </div>
+            </li>
+          </sc-for>
+        </ul>
+      </div>
+    </section>
+
+    <section id="reg" class="stage" style="min-height:auto;padding-top:clamp(72px,10vw,128px);padding-bottom:clamp(72px,10vw,128px)">
+      <div class="stage-veil" style="background:radial-gradient(110% 70% at 50% 0%, rgba(22,34,60,0.6) 0%, rgba(11,15,24,0) 70%)"></div>
+      <div class="stage-inner" style="max-width:560px">
+        <span class="wp" ref="{{ setNode }}" style="z-index:4"><span class="node-dot"></span></span>
+        <x-import component-from-global-scope="SolihaIslamicParentingDesignSystem_1e5f6d.LabelPill" tone="onDark" hint-size="150px,34px">Финиш · Регистрация</x-import>
+        <h2 style="font-size:var(--fs-display-2)">Займите <span style="font-style:italic;color:var(--gold-400)">место</span> в маршруте</h2>
+        <div class="datepill"><span>30 июня 2026</span><span class="diam"></span><span>18:00 МСК</span><span class="diam"></span><span>бесплатно</span></div>
+
+        <div style="margin-top:8px">
+          <x-import component-from-global-scope="SolihaIslamicParentingDesignSystem_1e5f6d.Button" variant="primary" size="lg" href="{{ tgBotUrl }}" hint-size="220px,58px">Иду на эфир</x-import>
+        </div>
+      </div>
+    </section>
+
+    <footer style="position:relative;z-index:2;padding:30px clamp(20px,5vw,48px);text-align:center;border-top:1px solid var(--line-on-dark);display:flex;flex-direction:column;align-items:center;gap:8px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="width:11px;height:11px;background:var(--gold-gradient);transform:rotate(45deg);border-radius:2px"></span>
+        <span style="font-family:var(--font-script);font-size:25px;line-height:1;color:var(--text-on-dark);padding-bottom:4px">Soliha</span>
+      </div>
+      <span style="font-size:12px;letter-spacing:.05em;color:var(--text-on-dark-muted)">© 2026 · Тарбия дома · Эфир 30 июня 2026</span>
+    </footer>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;tgBotUrl&quot;: { &quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;https://r.bothelp.io/tg?domain=Detisestram_bot&amp;start=c1782168593416-ds&amp;utm_source=telegram_ads&amp;utm_medium=target&amp;utm_campaign=side&quot;, &quot;tsType&quot;: &quot;string&quot; },
+  &quot;starfield&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot; },
+  &quot;scriptUrl&quot;: { &quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;[ВСТАВИТЬ_URL_СКРИПТА]&quot;, &quot;tsType&quot;: &quot;string&quot; }
+}">
+class Component extends DCLogic {
+  // === Ссылка на Telegram-бот. Замените плейсхолдер ниже ===
+  // (или установите через твик "tgBotUrl" в редакторе).
+  TG_BOT_URL_PLACEHOLDER = "https://r.bothelp.io/tg?domain=Detisestram_bot&start=c1782168593416-ds&utm_source=telegram_ads&utm_medium=target&utm_campaign=side";
+
+  state = { name: "", contact: "", status: "idle" };
+
+  setJourney = (el) => { this.journey = el; };
+  setVideo = (el) => {
+    if (!el || this._video === el) return;
+    this._video = el;
+    el.muted = true;
+    el.loop = true;
+    el.playsInline = true;
+    const play = () => { try { el.load(); } catch (e) {} el.play().catch(() => {}); };
+    // The preview file-server doesn't support range requests, which <video> needs to
+    // stream. Fetch the whole file and play it from an in-memory blob URL instead.
+    // If that fails (e.g. a bundled standalone file), fall back to the inline <source>.
+    fetch("assets/hero.mp4")
+      .then((r) => { if (!r.ok) throw new Error("no"); return r.blob(); })
+      .then((b) => { el.src = URL.createObjectURL(b); play(); })
+      .catch(() => { play(); });
+  };
+  setSvg = (el) => { this.svg = el; };
+  setBase = (el) => { this.base = el; };
+  setProgress = (el) => { this.prog = el; };
+  setMarker = (el) => { this.marker = el; };
+  setStars = (el) => { this.stars = el; };
+  setNav = (el) => { this.nav = el; };
+  setDanger = (el) => { this.danger = el; };
+  setDangerVideo = (el) => {
+    if (!el || this._dvideo === el) return;
+    this._dvideo = el;
+    el.muted = true;
+    el.loop = true;
+    el.playsInline = true;
+    const load = () => {
+      fetch("assets/danger-smoke.mp4")
+        .then((r) => { if (!r.ok) throw new Error("no"); return r.blob(); })
+        .then((b) => { el.src = URL.createObjectURL(b); try { el.load(); } catch (e) {} el.play().catch(() => {}); })
+        .catch(() => { el.play().catch(() => {}); });
+    };
+    // Lazy: only fetch the clip when the section is ~600px from the viewport.
+    if (!("IntersectionObserver" in window)) { load(); return; }
+    const io = new IntersectionObserver((ents) => {
+      if (ents.some((e) => e.isIntersecting)) { io.disconnect(); load(); }
+    }, { rootMargin: "600px 0px 600px 0px" });
+    io.observe(el);
+  };
+  setDangerLight = (el) => { this.dangerLight = el; };
+  reveal = (el) => { if (el) (this._rev = this._rev || []).push(el); };
+  setNode = (el) => { if (el) (this._nodes = this._nodes || []).push(el); };
+
+  componentDidMount() {
+    document.title = "Эфир · Как воспитать ребёнка мусульманином";
+    // Ensure video autoplay (React doesn't always forward muted/loop properly)
+    setTimeout(() => {
+      document.querySelectorAll("video").forEach((v) => {
+        v.muted = true;
+        v.loop = true;
+        if (v.paused) v.play().catch(() => {});
+      });
+    }, 80);
+    this._reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if ((this.props.starfield ?? true)) this._makeStars(this.stars, 120);
+
+    // --- scroll reveals (robust multi-pass; works even when backgrounded) ---
+    if (this._reduce) {
+      (this._rev || []).forEach((el) => { el.style.opacity = "1"; el.style.transform = "none"; });
+    } else {
+      const revealEl = (el) => {
+        if (el._shown) return;
+        el._shown = true;
+        el.style.transitionDelay = (el.dataset.revealDelay || 0) + "ms";
+        el.style.opacity = "1";
+        el.style.transform = "none";
+      };
+      this._io = new IntersectionObserver((entries) => {
+        entries.forEach((en) => { if (en.isIntersecting) { revealEl(en.target); this._io.unobserve(en.target); } });
+      }, { threshold: 0.12, rootMargin: "0px 0px -7% 0px" });
+      const doPass = () => {
+        const vh = window.innerHeight || document.documentElement.clientHeight || 800;
+        (this._rev || []).forEach((el) => {
+          if (el._shown || el._obs) return;
+          if (el.getBoundingClientRect().top < vh * 0.95) revealEl(el);
+          else { el._obs = true; this._io.observe(el); }
+        });
+      };
+      [60, 240, 700].forEach((t) => setTimeout(doPass, t));
+      window.addEventListener("load", doPass);
+    }
+
+    // --- scroll-driven road + marker ---
+    this._tick = false;
+    this._onScroll = () => {
+      if (!this._tick) { this._tick = true; requestAnimationFrame(() => { this._update(); this._tick = false; }); }
+      if (!this._stick) { this._stick = true; setTimeout(() => { this._navState(); this._stick = false; }, 0); }
+    };
+    window.addEventListener("scroll", this._onScroll, { passive: true });
+    this._onResize = () => { clearTimeout(this._rt); this._rt = setTimeout(() => this._build(), 160); };
+    window.addEventListener("resize", this._onResize, { passive: true });
+
+    [160, 450, 950, 1700, 3000, 5000].forEach((t) => setTimeout(() => this._build(), t));
+    window.addEventListener("load", () => { this._build(); setTimeout(() => this._build(), 800); });
+    if (typeof ResizeObserver !== "undefined" && this.journey) {
+      this._ro = new ResizeObserver(() => { clearTimeout(this._rt); this._rt = setTimeout(() => this._build(), 80); });
+      this._ro.observe(this.journey);
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this._onScroll);
+    window.removeEventListener("resize", this._onResize);
+    if (this._io) this._io.disconnect();
+    if (this._ro) this._ro.disconnect();
+  }
+
+  _navState() {
+    if (!this.nav) return;
+    const on = window.scrollY > (window.innerHeight * 0.85);
+    if (on && !this._navOn) { this._navOn = true; this.nav.classList.add("stuck"); }
+    else if (!on && this._navOn) { this._navOn = false; this.nav.classList.remove("stuck"); }
+  }
+
+  _makeStars(container, n) {
+    if (!container) return;
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < n; i++) {
+      const s = document.createElement("i");
+      const sz = (Math.random() * 2 + 1).toFixed(2);
+      const gold = Math.random() < 0.22;
+      s.style.cssText =
+        "position:absolute;border-radius:50%;top:" + (Math.random() * 100).toFixed(2) + "%;left:" +
+        (Math.random() * 100).toFixed(2) + "%;width:" + sz + "px;height:" + sz + "px;background:" +
+        (gold ? "#E3D2A8" : "#ffffff") + ";opacity:.35;" +
+        (this._reduce ? "" : "animation:twk " + (3 + Math.random() * 4).toFixed(2) + "s ease-in-out " + (Math.random() * 4).toFixed(2) + "s infinite");
+      frag.appendChild(s);
+    }
+    container.appendChild(frag);
+  }
+
+  _smooth(pts) {
+    if (!pts || pts.length < 2) return "";
+    let d = "M " + pts[0].x.toFixed(1) + " " + pts[0].y.toFixed(1);
+    for (let i = 0; i < pts.length - 1; i++) {
+      const p0 = pts[i - 1] || pts[i];
+      const p1 = pts[i];
+      const p2 = pts[i + 1];
+      const p3 = pts[i + 2] || p2;
+      const c1x = p1.x + (p2.x - p0.x) / 6;
+      const c1y = p1.y + (p2.y - p0.y) / 6;
+      const c2x = p2.x - (p3.x - p1.x) / 6;
+      const c2y = p2.y - (p3.y - p1.y) / 6;
+      d += " C " + c1x.toFixed(1) + " " + c1y.toFixed(1) + " " + c2x.toFixed(1) + " " + c2y.toFixed(1) + " " + p2.x.toFixed(1) + " " + p2.y.toFixed(1);
+    }
+    return d;
+  }
+
+  _build() {
+    if (!this.journey || !this.svg || !this._nodes || this._nodes.length < 2) return;
+    const jr = this.journey.getBoundingClientRect();
+    const W = this.journey.offsetWidth;
+    const H = this.journey.offsetHeight;
+    const pts = this._nodes.map((n) => {
+      const r = n.getBoundingClientRect();
+      return { x: r.left - jr.left + r.width / 2, y: r.top - jr.top + r.height / 2, el: n };
+    });
+    this._pts = pts;
+    const d = this._smooth(pts);
+    this.svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+    if (this.base) this.base.setAttribute("d", d);
+    if (this.prog) {
+      this.prog.setAttribute("d", d);
+      this._L = this.prog.getTotalLength();
+      this.prog.style.strokeDasharray = this._L;
+      this.prog.style.strokeDashoffset = this._L;
+    }
+    if (this.marker) this.marker.style.opacity = "1";
+    // Cache the danger section's document position so the scroll loop never
+    // forces layout (getBoundingClientRect) per frame.
+    if (this.danger) {
+      const dr = this.danger.getBoundingClientRect();
+      this._dangerCenterDoc = dr.top + window.pageYOffset + dr.height / 2;
+    }
+    this._update();
+  }
+
+  _update() {
+    if (this._L && this.prog) {
+      const scn = document.documentElement.scrollHeight - window.innerHeight;
+      const p = scn > 0 ? Math.max(0, Math.min(1, window.scrollY / scn)) : 0;
+      const len = p * this._L;
+      const pt = this.prog.getPointAtLength(len);
+      if (this.marker) this.marker.style.transform = "translate(" + pt.x + "px," + pt.y + "px) translate(-50%,-50%)";
+      this.prog.style.strokeDashoffset = this._L - len;
+      if (this._pts) {
+        for (const q of this._pts) {
+          const on = pt.y >= q.y - 6;
+          if (on && !q.el._on) { q.el._on = true; q.el.classList.add("active"); }
+          else if (!on && q.el._on) { q.el._on = false; q.el.classList.remove("active"); }
+        }
+      }
+    }
+    if (this.dangerLight && this._dangerCenterDoc != null) {
+      const vh = window.innerHeight || 800;
+      const dist = Math.abs(this._dangerCenterDoc - (window.pageYOffset + vh / 2)) / vh;
+      const it = Math.max(0, Math.min(1, 1 - dist * 1.25));
+      this.dangerLight.style.opacity = it;
+    }
+  }
+
+  scrollToForm = () => {
+    const el = document.getElementById("reg");
+    if (!el) return;
+    const y = el.getBoundingClientRect().top + window.pageYOffset - 8;
+    window.scrollTo({ top: y, behavior: this._reduce ? "auto" : "smooth" });
+  };
+
+  onName = (e) => this.setState({ name: e.target.value, status: this.state.status === "invalid" ? "idle" : this.state.status });
+  onContact = (e) => this.setState({ contact: e.target.value, status: this.state.status === "invalid" ? "idle" : this.state.status });
+
+  submit = async (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+    const name = (this.state.name || "").trim();
+    const contact = (this.state.contact || "").trim();
+    if (!name || !contact) { this.setState({ status: "invalid" }); return; }
+    this.setState({ status: "sending" });
+    try {
+      const fd = new FormData();
+      fd.append("name", name);
+      fd.append("contact", contact);
+      await fetch(this.props.scriptUrl || this.SCRIPT_URL_PLACEHOLDER, { method: "POST", mode: "no-cors", body: fd });
+      this.setState({ status: "success" });
+    } catch (err) {
+      this.setState({ status: "error" });
+    }
+  };
+
+  renderVals() {
+    const st = this.state.status;
+    const sides = ["L", "R", "L", "R", "", "L", "R"];
+    const stations = [
+      { n: 1, tag: "Старт", text: "Какой должна быть главная цель воспитания мусульманского ребёнка." },
+      { n: 2, tag: "Ранний участок", text: "Почему воспитание начинается намного раньше, чем большинство родителей думают." },
+      { n: 3, tag: "Станции по возрастам", text: "Какие особенности есть у каждого возраста и почему нельзя воспитывать одинаково двухлетку, школьника и подростка." },
+      { n: 4, tag: "Скрытые повороты", text: "Какие ошибки чаще всего совершают родители, сами того не замечая." },
+      { n: 5, tag: "Опасный участок", text: "", danger: true },
+      { n: 6, tag: "Вся карта целиком", text: "Из каких составляющих складывается целостная система исламского воспитания." },
+      { n: 7, tag: "Финиш", text: "Что Аллах возложил на родителей и на чём действительно нужно сосредоточить усилия." },
+    ];
+    const painTexts = [
+      "Вы хотите воспитывать ребёнка по Исламу, но не понимаете, с чего начинать и на что обратить внимание в первую очередь.",
+      "Вам кажется, что воспитание сводится к постоянной борьбе: замечания, уговоры, запреты — а результата всё равно нет.",
+      "Вы переживаете, что интернет, телефон, друзья и современная культура влияют на ребёнка сильнее, чем семья.",
+      "Вы не знаете, как воспитывать ребёнка в разном возрасте: где нужна мягкость, где твёрдость, а где уже поздно исправлять ошибки.",
+      "Вы боитесь, что однажды ребёнок может охладеть к религии, и хотите сделать всё, чтобы этого не произошло.",
+      "Вы хотите воспитать праведного мусульманина, который будет держаться за религию и когда вырастет.",
+    ];
+    const pains = painTexts.map((text, i) => ({ text, delay: i * 110 }));
+    const results = [
+      "Поймёте, из чего состоит целостная система воспитания детей по Исламу.",
+      "Увидите, какие задачи стоят перед родителями на каждом этапе взросления ребёнка.",
+      "Поймёте, на что направить силы уже сейчас — независимо от возраста ваших детей.",
+      "Получите ясное представление, как воспитывать ребёнка мусульманином в современном мире.",
+    ];
+    const bio = [
+      "Четверо старших обучаются дома. Её дети никогда не посещали детские сады и светские школы.",
+      "Воспитывает детей самостоятельно, без нянь и помощи бабушек.",
+      "Училась в Египте, выпускница Академии шейха Мухаммада Солиха аль-Мунаджида ZAD, студентка онлайн-программы Мединского исламского университета.",
+      "Автор большого курса по воспитанию детей в Исламе, который уже прошли более 1000 сестёр.",
+    ];
+    return {
+      stations: stations.map((s, i) => ({ ...s, normal: !s.danger, danger: !!s.danger, sideClass: sides[i] })),
+      pains,
+      results: results.map((text, i) => ({ text, n: i + 1, delay: i * 90 })),
+      bio,
+      name: this.state.name,
+      contact: this.state.contact,
+      isSending: st === "sending",
+      isSuccess: st === "success",
+      isError: st === "error",
+      isInvalid: st === "invalid",
+      showForm: st !== "success",
+      reveal: this.reveal,
+      setNode: this.setNode,
+      tgBotUrl: this.props.tgBotUrl || this.TG_BOT_URL_PLACEHOLDER,
+      setVideo: this.setVideo,
+      setJourney: this.setJourney,
+      setSvg: this.setSvg,
+      setBase: this.setBase,
+      setProgress: this.setProgress,
+      setMarker: this.setMarker,
+      setStars: this.setStars,
+      setNav: this.setNav,
+      setDanger: this.setDanger,
+      setDangerVideo: this.setDangerVideo,
+      setDangerLight: this.setDangerLight,
+      scrollToForm: this.scrollToForm,
+      submit: this.submit,
+      onName: this.onName,
+      onContact: this.onContact,
+    };
+  }
+}
+</script>
+</body>
+</html>

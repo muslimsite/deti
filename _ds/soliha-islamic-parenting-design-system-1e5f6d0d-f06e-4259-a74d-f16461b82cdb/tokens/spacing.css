@@ -1,0 +1,26 @@
+/* ============================================================
+   SPACING & LAYOUT TOKENS
+   8px base rhythm; generous section padding.
+   ============================================================ */
+:root {
+  --space-1:  0.25rem;   /* 4  */
+  --space-2:  0.5rem;    /* 8  */
+  --space-3:  0.75rem;   /* 12 */
+  --space-4:  1rem;      /* 16 */
+  --space-5:  1.5rem;    /* 24 */
+  --space-6:  2rem;      /* 32 */
+  --space-7:  2.5rem;    /* 40 */
+  --space-8:  3rem;      /* 48 */
+  --space-9:  4rem;      /* 64 */
+  --space-10: 5rem;      /* 80 */
+  --space-12: 7.5rem;    /* 120 — section vertical padding (desktop) */
+
+  /* ---- Layout ---- */
+  --container-max:   1200px;   /* @kind other */
+  --container-text:  720px;     /* readable measure for prose @kind other */
+  --gutter:          clamp(1.25rem, 5vw, 4rem);  /* @kind spacing */
+  --section-py:      clamp(4rem, 9vw, 7.5rem);   /* @kind spacing */
+
+  /* ---- Grid gaps ---- */
+  --gap-cards: clamp(1.25rem, 2.5vw, 2rem); /* @kind spacing */
+}

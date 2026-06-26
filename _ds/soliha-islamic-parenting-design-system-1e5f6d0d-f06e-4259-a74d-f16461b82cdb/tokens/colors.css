@@ -1,0 +1,53 @@
+/* ============================================================
+   COLOR TOKENS
+   Premium, modest, spiritual palette: matte gold, deep navy,
+   near-black, and warm cream/ivory.
+   ============================================================ */
+:root {
+  /* ---- Brand base ---- */
+  --gold-500: #C7A86B;        /* primary muted matte gold accent */
+  --gold-400: #D4BA85;        /* lighter gold (hover, highlights) */
+  --gold-600: #B08F52;        /* deeper gold (press, dividers) */
+  --gold-300: #E3D2A8;        /* pale gold (subtle fills) */
+  --gold-gradient: linear-gradient(135deg, #E3D2A8 0%, #C7A86B 48%, #A77E3F 100%); /* @kind color */
+  --gold-gradient-soft: linear-gradient(135deg, #D4BA85 0%, #C7A86B 100%); /* @kind color */
+
+  /* ---- Dark surfaces ---- */
+  --navy-900: #0E1626;        /* deep navy hero/feature background */
+  --navy-800: #14203A;        /* raised navy surface */
+  --navy-700: #1B2A47;        /* navy card on dark */
+  --ink-900:  #0D0D0D;        /* near-black background */
+  --ink-800:  #161616;        /* near-black raised surface */
+
+  /* ---- Light surfaces ---- */
+  --cream-100: #F2EBDD;       /* primary cream/ivory section background */
+  --cream-50:  #FAF6EE;       /* lightest ivory (cards on cream) */
+  --cream-200: #E9DEC9;       /* warm sand (subtle dividers / fills) */
+  --white:     #FFFFFF;
+
+  /* ---- Text ---- */
+  --text-on-light:        #1B2A3A;   /* dark navy text on cream/ivory */
+  --text-on-light-muted:  #5A6675;   /* secondary text on light */
+  --text-on-dark:         #F6F1E7;    /* warm off-white on dark */
+  --text-on-dark-muted:   #A9B0BC;    /* secondary text on dark */
+  --text-gold:            #C7A86B;    /* gold text accent */
+
+  /* ---- Lines & ornaments ---- */
+  --line-gold:        rgba(199, 168, 107, 0.55);
+  --line-gold-strong: #C7A86B;
+  --line-on-light:    rgba(27, 42, 58, 0.14);
+  --line-on-dark:     rgba(246, 241, 231, 0.14);
+
+  /* ---- Semantic aliases ---- */
+  --accent:            var(--gold-500);
+  --accent-strong:     var(--gold-600);
+  --surface-dark:      var(--navy-900);
+  --surface-darkest:   var(--ink-900);
+  --surface-light:     var(--cream-100);
+  --surface-card:      var(--cream-50);
+  --surface-card-dark: var(--navy-700);
+  --text-body:         var(--text-on-light);
+  --text-heading:      var(--text-on-light);
+  --divider:           var(--line-gold);
+  --focus-ring:        rgba(199, 168, 107, 0.55);
+}
