@@ -32,6 +32,7 @@
   @keyframes dangerZoom{0%{transform:scale(1.05)}50%{transform:scale(1.13)}100%{transform:scale(1.05)}}
   @keyframes smokeRise{0%{transform:translate(0,70px) scale(0.6,0.5);opacity:0}14%{opacity:.6}82%{opacity:.5}100%{transform:translate(-22px,-400px) scale(1.1,1.5);opacity:0}}
   @keyframes smokeRise2{0%{transform:translate(0,70px) scale(0.65,0.55);opacity:0}14%{opacity:.55}82%{opacity:.45}100%{transform:translate(26px,-420px) scale(1.15,1.6);opacity:0}}
+  @keyframes quizIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 
   .journey{position:relative;overflow:hidden;background:radial-gradient(160% 46% at 50% 0%, #18253f 0%, #0e1626 40%, #0b0f18 100%)}
   .stars{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
@@ -153,6 +154,59 @@
       </div>
     </div>
 
+    <div class="ms-center" style="padding-top:clamp(28px,4vw,48px);padding-bottom:clamp(28px,4vw,48px)">
+      <div style="max-width:580px;margin:0 auto;position:relative">
+        <span class="ms-node wp" ref="{{ setNode }}" style="top:0"><span class="node-dot"></span></span>
+        <div ref="{{ reveal }}" style="opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)">
+
+          <sc-if value="{{ !quizStarted }}">
+            <div class="jcard" style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:18px">
+              <div class="eyebrow">3 вопроса · 1 минута</div>
+              <h2 style="font-size:var(--fs-display-3)">Какой вы <span style="font-style:italic;color:var(--gold-400)">путник?</span></h2>
+              <p style="font-size:var(--fs-small);line-height:1.7;color:var(--text-on-dark-muted);max-width:400px">Ответьте на 3 вопроса — узнайте, на каком этапе вы находитесь и что получите на эфире лично для себя.</p>
+              <div style="margin-top:4px">
+                <x-import component-from-global-scope="SolihaIslamicParentingDesignSystem_1e5f6d.Button" variant="primary" size="md" onclick="{{ startQuiz }}" hint-size="200px,52px">Пройти тест</x-import>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ quizActive }}">
+            <div class="jcard" style="display:flex;flex-direction:column;gap:20px;animation:quizIn .45s var(--ease-out) both">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div class="eyebrow">Вопрос {{ quizStep }} из 3</div>
+                <div style="display:flex;gap:6px;align-items:center">
+                  <sc-for list="{{ quizDots }}" as="d">
+                    <span style="width:8px;height:8px;border-radius:50%;display:inline-block;background:{{ d.active ? '#EBDDB6' : 'rgba(199,168,107,0.25)' }}"></span>
+                  </sc-for>
+                </div>
+              </div>
+              <h3 style="margin:0;font-size:var(--fs-display-3);font-family:var(--font-display);font-weight:600;line-height:1.25">{{ quizQuestion.q }}</h3>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <sc-for list="{{ quizOpts }}" as="opt">
+                  <button onclick="{{ opt.answer }}" style="text-align:left;width:100%;padding:14px 18px;border-radius:var(--radius-md);border:1px solid rgba(199,168,107,0.28);background:rgba(255,255,255,0.04);color:var(--text-on-dark);font-family:var(--font-body);font-size:var(--fs-small);line-height:1.6;cursor:pointer;transition:border-color .18s,background .18s" style-hover="border-color:rgba(199,168,107,0.7);background:rgba(199,168,107,0.09)">{{ opt.text }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ quizDone }}">
+            <div class="jcard" style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:18px;animation:quizIn .5s var(--ease-out) both">
+              <div class="eyebrow">Ваш результат</div>
+              <span style="display:inline-block;width:44px;height:44px;background:var(--gold-gradient);transform:rotate(45deg);border-radius:6px;box-shadow:var(--shadow-gold)"></span>
+              <h2 style="font-size:var(--fs-display-3)"><span style="font-style:italic;color:var(--gold-400)">{{ quizResultData.title }}</span></h2>
+              <p style="font-size:var(--fs-small);line-height:1.75;color:var(--text-on-dark);max-width:440px">{{ quizResultData.text }}</p>
+              <div class="datepill"><span>30 июня 2026</span><span class="diam"></span><span>18:00 МСК</span><span class="diam"></span><span>бесплатно</span></div>
+              <div>
+                <x-import component-from-global-scope="SolihaIslamicParentingDesignSystem_1e5f6d.Button" variant="primary" size="lg" href="{{ tgBotUrl }}" hint-size="220px,58px">Иду на эфир</x-import>
+              </div>
+              <button onclick="{{ resetQuiz }}" style="background:none;border:none;color:var(--text-on-dark-muted);font-size:12px;cursor:pointer;text-decoration:underline;margin-top:-4px">Пройти заново</button>
+            </div>
+          </sc-if>
+
+        </div>
+      </div>
+    </div>
+
     <sc-for list="{{ stations }}" as="s" hint-placeholder-count="7">
       <sc-if value="{{ s.normal }}" hint-placeholder-val="{{ true }}">
         <div class="ms {{ s.sideClass }}">
@@ -257,7 +311,64 @@ class Component extends DCLogic {
   // (или установите через твик "tgBotUrl" в редакторе).
   TG_BOT_URL_PLACEHOLDER = "https://r.bothelp.io/tg?domain=Detisestram_bot&start=c1782168593416-ds&utm_source=telegram_ads&utm_medium=target&utm_campaign=side";
 
-  state = { name: "", contact: "", status: "idle" };
+  state = { name: "", contact: "", status: "idle", quizStep: 0, quizAnswers: [], quizResult: null };
+
+  QUIZ = [
+    {
+      q: "Что сейчас даётся вам сложнее всего?",
+      opts: [
+        "Нет понимания, с чего вообще начинать — нет системы",
+        "Начала, но не уверена, правильно ли иду и что важнее",
+        "Чувствую, что мир вокруг влияет на ребёнка сильнее меня",
+      ],
+    },
+    {
+      q: "Когда ребёнок не слушается, что происходит?",
+      opts: [
+        "Теряюсь — не знаю, как правильно реагировать по Исламу",
+        "Стараюсь, но ощущение, что что-то важное всё равно упускаю",
+        "Думаю: телефон и окружение влияют на него больше, чем я",
+      ],
+    },
+    {
+      q: "Что хотите забрать с эфира?",
+      opts: [
+        "Отправную точку — с чего начать и куда двигаться",
+        "Целостную систему и ориентиры по возрастам",
+        "Понять, как защитить ребёнка в современном мире",
+      ],
+    },
+  ];
+
+  QUIZ_RESULTS = [
+    {
+      title: "Вы в начале маршрута",
+      text: "У вас есть желание и любовь — не хватает отправной точки. На эфире вы получите чёткий старт и поймёте, куда двигаться и с чего начать уже сегодня.",
+    },
+    {
+      title: "Вы в пути, но без карты",
+      text: "Вы уже делаете многое — но интуитивно, без системы. На эфире вы увидите целостную картину исламского воспитания и расставите приоритеты.",
+    },
+    {
+      title: "Вы на опасном участке",
+      text: "Вы чувствуете давление современного мира на ребёнка. На эфире разберём, как пройти этот участок пути и не потерять ребёнка.",
+    },
+  ];
+
+  startQuiz = () => this.setState({ quizStep: 1, quizAnswers: [], quizResult: null });
+  resetQuiz = () => this.setState({ quizStep: 0, quizAnswers: [], quizResult: null });
+
+  answerQuiz = (idx) => {
+    const answers = [...(this.state.quizAnswers || []), idx];
+    if (answers.length < this.QUIZ.length) {
+      this.setState({ quizStep: this.state.quizStep + 1, quizAnswers: answers });
+    } else {
+      const counts = [0, 0, 0];
+      answers.forEach((a) => counts[a]++);
+      const result = counts.indexOf(Math.max(...counts));
+      this.setState({ quizStep: 99, quizAnswers: answers, quizResult: result });
+    }
+  };
 
   setJourney = (el) => { this.journey = el; };
   setVideo = (el) => {
@@ -339,24 +450,29 @@ class Component extends DCLogic {
       };
       this._io = new IntersectionObserver((entries) => {
         entries.forEach((en) => { if (en.isIntersecting) { revealEl(en.target); this._io.unobserve(en.target); } });
-      }, { threshold: 0.12, rootMargin: "0px 0px -7% 0px" });
+      }, { threshold: 0.05, rootMargin: "0px 0px 0px 0px" });
       const doPass = () => {
         const vh = window.innerHeight || document.documentElement.clientHeight || 800;
         (this._rev || []).forEach((el) => {
           if (el._shown || el._obs) return;
-          if (el.getBoundingClientRect().top < vh * 0.95) revealEl(el);
+          if (el.getBoundingClientRect().top < vh * 0.98) revealEl(el);
           else { el._obs = true; this._io.observe(el); }
         });
       };
-      [60, 240, 700].forEach((t) => setTimeout(doPass, t));
+      this._doPass = doPass;
+      // Run at many points so late-rendered components (design system bundle) are caught.
+      [60, 240, 500, 900, 1500, 2500, 4000].forEach((t) => setTimeout(doPass, t));
       window.addEventListener("load", doPass);
     }
 
     // --- scroll-driven road + marker ---
     this._tick = false;
+    this._scrollCount = 0;
     this._onScroll = () => {
       if (!this._tick) { this._tick = true; requestAnimationFrame(() => { this._update(); this._tick = false; }); }
       if (!this._stick) { this._stick = true; setTimeout(() => { this._navState(); this._stick = false; }, 0); }
+      // Re-run reveal on first 10 scroll events to catch any late-mounted elements.
+      if (this._scrollCount < 10 && this._doPass) { this._scrollCount++; this._doPass(); }
     };
     window.addEventListener("scroll", this._onScroll, { passive: true });
     this._onResize = () => { clearTimeout(this._rt); this._rt = setTimeout(() => this._build(), 160); };
@@ -537,6 +653,11 @@ class Component extends DCLogic {
       "Училась в Египте, выпускница Академии шейха Мухаммада Солиха аль-Мунаджида ZAD, студентка онлайн-программы Мединского исламского университета.",
       "Автор большого курса по воспитанию детей в Исламе, который уже прошли более 1000 сестёр.",
     ];
+    const qStep = this.state.quizStep;
+    const quizQuestion = (qStep >= 1 && qStep <= 3) ? this.QUIZ[qStep - 1] : null;
+    const quizOpts = quizQuestion
+      ? quizQuestion.opts.map((text, i) => ({ text, answer: () => this.answerQuiz(i) }))
+      : [];
     return {
       stations: stations.map((s, i) => ({ ...s, normal: !s.danger, danger: !!s.danger, sideClass: sides[i] })),
       pains,
@@ -549,6 +670,16 @@ class Component extends DCLogic {
       isError: st === "error",
       isInvalid: st === "invalid",
       showForm: st !== "success",
+      quizStarted: qStep > 0 && qStep !== 99,
+      quizActive: qStep >= 1 && qStep <= 3,
+      quizDone: qStep === 99,
+      quizStep: qStep,
+      quizQuestion,
+      quizOpts,
+      quizDots: [1, 2, 3].map((i) => ({ active: i <= qStep })),
+      quizResultData: this.state.quizResult != null ? this.QUIZ_RESULTS[this.state.quizResult] : { title: "", text: "" },
+      startQuiz: this.startQuiz,
+      resetQuiz: this.resetQuiz,
       reveal: this.reveal,
       setNode: this.setNode,
       tgBotUrl: this.props.tgBotUrl || this.TG_BOT_URL_PLACEHOLDER,
