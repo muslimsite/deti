@@ -54,7 +54,7 @@
   @keyframes markerRingSvg{0%{transform:scale(1);opacity:.7}100%{transform:scale(2);opacity:0}}
 
   .content{position:relative;z-index:2}
-  .nav{position:sticky;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px clamp(18px,5vw,48px);background:rgba(11,15,24,0.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(199,168,107,0.12)}
+  .nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px clamp(18px,5vw,48px);background:rgba(11,15,24,0.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(199,168,107,0.12)}
 
   .stage{position:relative;min-height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:clamp(64px,9vw,110px) clamp(20px,5vw,40px)}
   .stage-bg{position:absolute;inset:0;z-index:0;background-size:cover}
@@ -99,6 +99,14 @@
 </style>
 </helmet>
 
+<nav class="nav" ref="{{ setNav }}">
+  <div style="display:flex;align-items:center;gap:11px">
+    <span style="width:13px;height:13px;background:var(--gold-gradient);transform:rotate(45deg);box-shadow:var(--shadow-gold);border-radius:2px"></span>
+    <span style="font-family:var(--font-display);font-style:italic;font-size:17px;font-weight:600;letter-spacing:.01em;color:var(--gold-400)">Солиха умм Муса</span>
+  </div>
+  <span style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-400)">30 июня · 18:00 МСК</span>
+</nav>
+
 <div class="journey" ref="{{ setJourney }}">
   <div class="stars" ref="{{ setStars }}"></div>
   <div class="road-layer">
@@ -117,14 +125,6 @@
       </g>
     </svg>
   </div>
-
-  <nav class="nav" ref="{{ setNav }}">
-    <div style="display:flex;align-items:center;gap:11px">
-      <span style="width:13px;height:13px;background:var(--gold-gradient);transform:rotate(45deg);box-shadow:var(--shadow-gold);border-radius:2px"></span>
-      <span style="font-family:var(--font-display);font-style:italic;font-size:17px;font-weight:600;letter-spacing:.01em;color:var(--gold-400)">Солиха умм Муса</span>
-    </div>
-    <span style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-400)">30 июня · 18:00 МСК</span>
-  </nav>
 
   <div class="content">
 
@@ -619,7 +619,7 @@ class Component extends DCLogic {
     if (this._L && this.prog) {
       const targetY = (window.scrollY + window.innerHeight / 2) - (this._journeyTop || 0);
       let lo = 0, hi = this._L;
-      for (let i = 0; i < 8; i++) {
+      for (let i = 0; i < 12; i++) {
         const mid = (lo + hi) / 2;
         if (this.prog.getPointAtLength(mid).y < targetY) lo = mid; else hi = mid;
       }
