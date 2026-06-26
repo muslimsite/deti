@@ -159,13 +159,14 @@
         <span class="ms-node wp" ref="{{ setNode }}" style="top:0"><span class="node-dot"></span></span>
         <div ref="{{ reveal }}" style="opacity:0;transform:translateY(28px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)">
 
-          <sc-if value="{{ !quizStarted }}">
-            <div class="jcard" style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:18px">
+          <sc-if value="{{ quizIdle }}">
+            <div class="jcard" style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:22px;padding:clamp(32px,5vw,52px) clamp(22px,4vw,40px)">
+              <span style="display:inline-block;width:38px;height:38px;background:var(--gold-gradient);transform:rotate(45deg);border-radius:5px;box-shadow:var(--shadow-gold)"></span>
               <div class="eyebrow">3 вопроса · 1 минута</div>
               <h2 style="font-size:var(--fs-display-3)">Какой вы <span style="font-style:italic;color:var(--gold-400)">путник?</span></h2>
-              <p style="font-size:var(--fs-small);line-height:1.7;color:var(--text-on-dark-muted);max-width:400px">Ответьте на 3 вопроса — узнайте, на каком этапе вы находитесь и что получите на эфире лично для себя.</p>
-              <div style="margin-top:4px">
-                <button onclick="{{ startQuiz }}" style="display:inline-flex;align-items:center;justify-content:center;padding:14px 32px;border-radius:var(--radius-pill);border:none;background:var(--gold-gradient);color:#1a1200;font-family:var(--font-body);font-size:var(--fs-body);font-weight:700;letter-spacing:.02em;cursor:pointer;box-shadow:var(--shadow-gold);transition:opacity .18s">Пройти тест</button>
+              <p style="font-size:var(--fs-small);line-height:1.75;color:var(--text-on-dark-muted);max-width:400px">Ответьте на 3 вопроса — узнайте, на каком этапе вы находитесь и что именно получите на эфире лично для себя.</p>
+              <div style="margin-top:8px">
+                <button onclick="{{ startQuiz }}" style="display:inline-flex;align-items:center;justify-content:center;padding:16px 36px;border-radius:var(--radius-pill);border:none;background:var(--gold-gradient);color:#1a1200;font-family:var(--font-body);font-size:var(--fs-body);font-weight:700;letter-spacing:.02em;cursor:pointer;box-shadow:var(--shadow-gold);transition:opacity .18s">Пройти тест</button>
               </div>
             </div>
           </sc-if>
@@ -323,11 +324,11 @@ class Component extends DCLogic {
       ],
     },
     {
-      q: "Когда ребёнок не слушается, что происходит?",
+      q: "Когда ребёнок не слушается, что вы чувствуете?",
       opts: [
-        "Теряюсь — не знаю, как правильно реагировать по Исламу",
-        "Стараюсь, но ощущение, что что-то важное всё равно упускаю",
-        "Думаю: телефон и окружение влияют на него больше, чем я",
+        "Растерянность — не знаю, как реагировать правильно, по-исламски",
+        "Усталость — объясняю, повторяю, но слова не доходят",
+        "Тревогу — боюсь, что телефон и друзья влияют на него сильнее меня",
       ],
     },
     {
@@ -670,7 +671,7 @@ class Component extends DCLogic {
       isError: st === "error",
       isInvalid: st === "invalid",
       showForm: st !== "success",
-      quizStarted: qStep > 0 && qStep !== 99,
+      quizIdle: qStep === 0,
       quizActive: qStep >= 1 && qStep <= 3,
       quizDone: qStep === 99,
       quizStep: qStep,
